@@ -1,4 +1,4 @@
-/*-----------------------------------------------------------------------------------
+﻿/*-----------------------------------------------------------------------------------
 
   Template Name: Asbab eCommerce HTML5 Template.
   Template URI: #
@@ -335,7 +335,7 @@
           max: 5000,
           values: [110, 400],
           slide: function(event, ui) {
-              $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+              $("#amount").val("₺" + ui.values[0] + " - ₺" + ui.values[1]);
               $("#min").val(ui.values[0]);
               $("#max").val(ui.values[1]);
           }
