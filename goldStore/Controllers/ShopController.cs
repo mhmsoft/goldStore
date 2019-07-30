@@ -30,6 +30,19 @@ namespace goldStore.Controllers
         // ürünleri gösteren method
         public ActionResult Products(int?categoryId,decimal?min,decimal?max)
         {
+            ViewBag.orderBy = new List<SelectListItem>() {
+                new SelectListItem { Text = "Fiyat", Value = "1", Selected = true },
+                new SelectListItem { Text = "İsim", Value = "2" },
+
+            };
+            ViewBag.PageSize = new List<SelectListItem>() {
+                new SelectListItem { Text = "20", Value = "20", Selected = true },
+                new SelectListItem { Text = "10", Value = "10" },
+                new SelectListItem { Text = "5", Value = "5" },
+                new SelectListItem { Text = "2", Value = "2" },
+                new SelectListItem { Text = "1", Value = "1" }
+            };
+
             var result = repoProduct.GetAll();
             // eğer kategoriye göre bir filtreleme istendiğinde
             if (categoryId!=null)
