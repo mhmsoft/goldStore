@@ -1417,6 +1417,7 @@
     <Content Include="Views\_Shared\_LayoutShop.cshtml" />
     <Content Include="Views\Shop\Products.cshtml" />
     <Content Include="Views\Shop\PartialCategory.cshtml" />
+    <Content Include="Views\Shop\PartialPrice.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
