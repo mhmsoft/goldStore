@@ -1299,6 +1299,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\ViewModel\Login.cs" />
     <Compile Include="Models\ViewModel\Register.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1438,6 +1439,7 @@
     <Content Include="Views\User\PartialBrands.cshtml" />
     <Content Include="Views\User\PartialPrice.cshtml" />
     <Content Include="Views\User\PartialNewArrivals.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
