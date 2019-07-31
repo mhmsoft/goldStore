@@ -1284,9 +1284,11 @@
     <Compile Include="Areas\Panel\Models\Repository\BrandRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\CategoryRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\ProductRepository.cs" />
+    <Compile Include="Areas\Panel\Models\Repository\UserRepository.cs" />
     <Compile Include="Areas\Panel\Models\role.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Panel\Models\Security\Crypto.cs" />
     <Compile Include="Areas\Panel\Models\user.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
@@ -1296,6 +1298,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ViewModel\Register.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

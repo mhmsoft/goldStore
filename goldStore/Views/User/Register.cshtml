@@ -35,6 +35,24 @@
                 }
             </div>
         </div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            @if (ViewBag.status == true)
+            {
+                <div class="alert alert-success">
+                    <strong>Tebrikler!</strong>@ViewBag.message
+                </div>
+            }
+            else
+            {
+                if (ViewBag.message != null)
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong>@ViewBag.message
+                    </div>
+                }
+            }
+
+        </div>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
