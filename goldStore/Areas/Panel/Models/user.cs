@@ -31,6 +31,8 @@ namespace goldStore.Areas.Panel.Models
         public Nullable<System.DateTime> loginTime { get; set; }
         public Nullable<bool> isMailVerified { get; set; }
         public Nullable<int> roleId { get; set; }
+        public string city { get; set; }
+        public bool subscribe { get; set; }
     
         public virtual role role { get; set; }
     }

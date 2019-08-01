@@ -9,9 +9,9 @@ using System.Web.Mvc;
 
 namespace goldStore.Areas.Panel.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class ProductController : Controller
     {
-
         ProductRepository repository = new ProductRepository( new Models.goldstoreEntities());
         // GET: Panel/Product
         public ActionResult Index()

@@ -93,6 +93,7 @@ namespace goldStore.Controllers
             var user = repoUser.GetAll().Where(a => a.email == username).FirstOrDefault();
             return user == null ? false : true;
         }
+
         //mail adresinizdeki doğrulmayı yapmak için
         [HttpGet]
         public ActionResult VerifyAccount(string id)
@@ -117,10 +118,12 @@ namespace goldStore.Controllers
 
             return View("Login");
         }
+
         public ActionResult Login()
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(Login login,string ReturnUrl)
@@ -200,7 +203,124 @@ namespace goldStore.Controllers
                 }
 
             }
+            ViewBag.status = status;
+            ViewBag.message = message;
             return View();
+        }
+
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword(string email)
+        {
+            string message = "";
+            bool status = false;
+            if (!string.IsNullOrEmpty(email))
+            {
+                user _user = repoUser.GetAll().Where(x => x.email == email).FirstOrDefault();
+                if(_user!=null)
+                {
+                    Guid resetCode = Guid.NewGuid();
+                    _user.resetCode = resetCode.ToString();
+                    repoUser.Update(_user);
+
+                    SendResetCodeEmail(email,resetCode.ToString());
+                    status = true;
+                    message= "Parola Sıfırlama işlemi başarılı şekilde gerçekleştirildi. Parola sifirlama linki "
+                            + email + " adresinize gönderilmiştir."; 
+
+                }
+                else
+                {
+                    message = "Geçersiz Eposta";
+                }
+            }
+            else
+            {
+                message = "Email alanı boş olamaz";
+            }
+            ViewBag.message = message;
+            ViewBag.status = status;
+            return View();
+        }
+
+        public ActionResult ResetPassword(string id)
+        {
+            ResetPassword rp = new ResetPassword()
+            {
+                resetCode = id
+            };
+            return View(rp);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(ResetPassword rp)
+        {
+            string message = "";
+            bool status = false;
+            if(ModelState.IsValid)
+            {
+                user _user= repoUser.GetAll().Where(x => x.resetCode == rp.resetCode).FirstOrDefault();
+                if (_user != null)
+                {
+                    _user.password = Crypto.Hash(rp.newPassword);
+                    _user.rePassword = Crypto.Hash(rp.comfirmPassword);
+                    repoUser.Update(_user);
+                    status = true;
+                    message = "Şifreniz başarıyla değiştirildi";
+                }
+                else
+                    message = "Geçersiz kod";
+            }
+            ViewBag.message = message;
+            ViewBag.status = status;
+            return View();
+        }
+
+        public ActionResult Signout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
+        }
+
+        [NonAction]
+        public void SendResetCodeEmail(string emailID, string resetCode)
+        {
+            SmtpSection network = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+            try
+            {
+                var resetUrl = "/User/ResetPassword/" + resetCode;
+                var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, resetUrl);
+                var fromEmail = new MailAddress(network.Network.UserName, "Goldstore Parola Sıfırlama");
+                var toEmail = new MailAddress(emailID);
+
+                string subject = "Goldstore Parola Sıfırlama!";
+                string body = "<br/><br/>İsteğiniz üzere Goldstore Parola sıfırlama işleminiz talebi alınmıştır. Onaylamak için aşağıdaki bağlantıya tıklayınız" +
+                    " <br/><br/><a href='" + link + "'>" + link + "</a> ";
+                var smtp = new SmtpClient
+                {
+                    Host = network.Network.Host,
+                    Port = network.Network.Port,
+                    EnableSsl = network.Network.EnableSsl,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = network.Network.DefaultCredentials,
+                    Credentials = new NetworkCredential(network.Network.UserName, network.Network.Password)
+                };
+                using (var message = new MailMessage(fromEmail, toEmail)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                })
+                    smtp.Send(message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         [NonAction]

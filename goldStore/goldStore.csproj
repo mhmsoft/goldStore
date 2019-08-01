@@ -1293,6 +1293,7 @@
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Panel\PanelAreaRegistration.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1301,6 +1302,7 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ViewModel\Login.cs" />
     <Compile Include="Models\ViewModel\Register.cs" />
+    <Compile Include="Models\ViewModel\ResetPassword.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1440,6 +1442,10 @@
     <Content Include="Views\User\PartialPrice.cshtml" />
     <Content Include="Views\User\PartialNewArrivals.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\User\ForgotPassword.cshtml" />
+    <Content Include="Views\User\ResetPassword.cshtml" />
+    <Content Include="Views\_Shared\_LayoutAccount.cshtml" />
+    <Content Include="Views\Account\MyProfile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="goldstoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="goldstoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="brand">
           <Key>
             <PropertyRef Name="brandId" />
@@ -70,6 +70,8 @@
           <Property Name="loginTime" Type="datetime" />
           <Property Name="isMailVerified" Type="bit" />
           <Property Name="roleId" Type="int" />
+          <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="subscribe" Type="bit" />
         </EntityType>
         <Association Name="FK__product__brandId__15502E78">
           <End Role="brand" Type="Self.brand" Multiplicity="0..1" />
@@ -143,8 +145,7 @@
             <End Role="user" EntitySet="user" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="goldstoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -221,6 +222,8 @@
           <Property Name="isMailVerified" Type="Boolean" />
           <Property Name="roleId" Type="Int32" />
           <NavigationProperty Name="role" Relationship="Self.FK__user__roleId__1CF15040" FromRole="user" ToRole="role" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="subscribe" Type="Boolean" />
         </EntityType>
         <Association Name="FK__product__brandId__15502E78">
           <End Role="brand" Type="Self.brand" Multiplicity="0..1" />
@@ -352,6 +355,8 @@
           <EntitySetMapping Name="user">
             <EntityTypeMapping TypeName="goldstoreModel.user">
               <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="subscribe" ColumnName="subscribe" />
+                <ScalarProperty Name="city" ColumnName="city" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="firstName" ColumnName="firstName" />
                 <ScalarProperty Name="lastName" ColumnName="lastName" />

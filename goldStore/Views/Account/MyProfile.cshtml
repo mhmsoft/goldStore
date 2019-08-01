@@ -1,0 +1,94 @@
+﻿@model goldStore.Areas.Panel.Models.user
+@{
+    ViewBag.Title = "MyProfile";
+    Layout = "~/Views/_Shared/_LayoutAccount.cshtml";
+}
+<div class="col-lg-9 col-lg-push-3 col-md-9 col-md-push-3 col-sm-12 col-xs-12">
+    <div class="row">
+        @using (Html.BeginForm("MyProfile", "Account", FormMethod.Post, new { id = "profileForm" }))
+        {
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="ht__coupon__code">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.firstName)
+                    <div class="form-row">
+                        @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.LabelFor(model => model.lastName)
+                    <div class="coupon__box">
+                        @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.LabelFor(model => model.email)
+                    <div class="form-row">
+                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.LabelFor(model => model.password)
+                    <div class="form-row">
+                        @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.LabelFor(model => model.rePassword)
+                    <div class="form-row">
+                        @Html.EditorFor(model => model.rePassword, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="ht__coupon__code">
+                    @Html.LabelFor(model => model.phone)
+                    <div class="form-row">
+                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.LabelFor(model => model.address)
+                    <div class="form-row">
+                        @Html.TextAreaFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    @Html.LabelFor(model => model.city)
+                    <div class="form-row">
+                        @Html.EditorFor(model => model.city, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="form-row">
+                        @Html.CheckBoxFor(model=>model.subscribe)
+                        Yenilik ve ve haberlerden haberdar olmak istiyorum
+
+                    </div>
+
+
+             
+                </div>
+                <div class="ht__comment__btn--2 mt--30">
+                    <a class="fr__btn" href="javascript:void(0);" id="submitForm">Kaydet</a>
+                </div>
+            </div>
+        }
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            @if (ViewBag.status == true)
+            {
+                <div class="alert alert-success">
+                    <strong>Tebrikler!</strong>@ViewBag.message
+                </div>
+            }
+            else
+            {
+                if (ViewBag.message != null)
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error!</strong>@ViewBag.message
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#submitForm").click(function () {
+            $("#profileForm").submit();
+        });
+    });
+</script>
+
