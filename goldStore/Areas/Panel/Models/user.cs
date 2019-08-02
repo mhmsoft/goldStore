@@ -19,6 +19,7 @@ namespace goldStore.Areas.Panel.Models
         {
             this.orders = new HashSet<orders>();
             this.wishlist = new HashSet<wishlist>();
+            this.coupons = new HashSet<coupons>();
         }
     
         public int userId { get; set; }
@@ -46,5 +47,7 @@ namespace goldStore.Areas.Panel.Models
         public virtual ICollection<orders> orders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<wishlist> wishlist { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<coupons> coupons { get; set; }
     }
 }

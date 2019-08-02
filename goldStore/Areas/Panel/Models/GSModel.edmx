@@ -21,6 +21,19 @@
           <Property Name="categoryName" Type="varchar" MaxLength="50" />
           <Property Name="image" Type="varbinary(max)" />
         </EntityType>
+        <EntityType Name="coupons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" />
+          <Property Name="coupon" Type="varchar(max)" />
+          <Property Name="discount" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="created" Type="datetime" />
+          <Property Name="expired" Type="datetime" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="userId" Type="int" />
+        </EntityType>
         <EntityType Name="orderDetails">
           <Key>
             <PropertyRef Name="orderId" />
@@ -99,6 +112,18 @@
           <Property Name="userId" Type="int" />
           <Property Name="created" Type="datetime" />
         </EntityType>
+        <Association Name="FK__coupons__userId__44FF419A">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="coupons" Type="Self.coupons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="coupons">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__orders__customer__36B12243">
           <End Role="user" Type="Self.user" Multiplicity="0..1" />
           <End Role="orders" Type="Self.orders" Multiplicity="*" />
@@ -214,6 +239,7 @@
         <EntityContainer Name="goldstoreModelStoreContainer">
           <EntitySet Name="brand" EntityType="Self.brand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="coupons" EntityType="Self.coupons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="orderDetails" EntityType="Self.orderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="orders" EntityType="Self.orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="product" EntityType="Self.product" Schema="dbo" store:Type="Tables" />
@@ -221,6 +247,10 @@
           <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="wishlist" EntityType="Self.wishlist" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__coupons__userId__44FF419A" Association="Self.FK__coupons__userId__44FF419A">
+            <End Role="user" EntitySet="user" />
+            <End Role="coupons" EntitySet="coupons" />
+          </AssociationSet>
           <AssociationSet Name="FK__orders__customer__36B12243" Association="Self.FK__orders__customer__36B12243">
             <End Role="user" EntitySet="user" />
             <End Role="orders" EntitySet="orders" />
@@ -341,6 +371,7 @@
           <Property Name="subscribe" Type="Boolean" />
           <NavigationProperty Name="orders" Relationship="goldstoreModel.FK__orders__customer__36B12243" FromRole="user" ToRole="orders" />
           <NavigationProperty Name="wishlist" Relationship="goldstoreModel.FK__wishlist__userId__403A8C7D" FromRole="user" ToRole="wishlist" />
+          <NavigationProperty Name="coupons" Relationship="goldstoreModel.FK__coupons__userId__44FF419A" FromRole="user" ToRole="coupons" />
         </EntityType>
         <Association Name="FK__product__brandId__15502E78">
           <End Role="brand" Type="Self.brand" Multiplicity="0..1" />
@@ -436,6 +467,11 @@
             <End Role="user" EntitySet="user" />
             <End Role="wishlist" EntitySet="wishlist" />
           </AssociationSet>
+          <EntitySet Name="coupons" EntityType="goldstoreModel.coupons" />
+          <AssociationSet Name="FK__coupons__userId__44FF419A" Association="goldstoreModel.FK__coupons__userId__44FF419A">
+            <End Role="user" EntitySet="user" />
+            <End Role="coupons" EntitySet="coupons" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="orderDetails">
           <Key>
@@ -529,6 +565,32 @@
               <PropertyRef Name="userId" />
             </Principal>
             <Dependent Role="wishlist">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="coupons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="coupon" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="discount" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="created" Type="DateTime" Precision="3" />
+          <Property Name="expired" Type="DateTime" Precision="3" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="userId" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="goldstoreModel.FK__coupons__userId__44FF419A" FromRole="coupons" ToRole="user" />
+        </EntityType>
+        <Association Name="FK__coupons__userId__44FF419A">
+          <End Type="goldstoreModel.user" Role="user" Multiplicity="0..1" />
+          <End Type="goldstoreModel.coupons" Role="coupons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="coupons">
               <PropertyRef Name="userId" />
             </Dependent>
           </ReferentialConstraint>
@@ -638,6 +700,20 @@
                 <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="productId" ColumnName="productId" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="coupons">
+            <EntityTypeMapping TypeName="goldstoreModel.coupons">
+              <MappingFragment StoreEntitySet="coupons">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="expired" ColumnName="expired" />
+                <ScalarProperty Name="created" ColumnName="created" />
+                <ScalarProperty Name="discount" ColumnName="discount" />
+                <ScalarProperty Name="coupon" ColumnName="coupon" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

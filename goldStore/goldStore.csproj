@@ -1259,6 +1259,9 @@
     <Compile Include="Areas\Panel\Models\category.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Panel\Models\coupons.cs">
+      <DependentUpon>GSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Panel\Models\GSModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

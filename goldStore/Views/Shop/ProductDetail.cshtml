@@ -66,7 +66,7 @@
                 <div class="col-md-7 col-lg-7 col-sm-12 col-xs-12 smt-40 xmt-40">
                     <div class="ht__product__dtl">
                         <h2>@Model.productName</h2>
-                        
+
                         <ul class="rating">
                             <li><i class="icon-star icons"></i></li>
                             <li><i class="icon-star icons"></i></li>
@@ -83,15 +83,15 @@
                             <div class="sin__desc">
                                 <p><span>Stok Durumu:</span>@(Model.stock > 0 ? "Stokta Var" : "Stok Yok")</p>
                             </div>
-                           
+
                             <div class="sin__desc align--left">
                                 <p><span>Kategori:</span></p>
                                 <ul class="pro__cat__list">
                                     <li><a href="@Url.Action("Products","Shop",new {categoryId=Model.categoryId })">@Model.category.categoryName </a></li>
-                                   
+
                                 </ul>
                             </div>
-                            
+
                             <div class="sin__desc product__share__link">
                                 <p><span>Paylaş:</span></p>
                                 <ul class="pro__share">
@@ -105,8 +105,11 @@
 
                                     <li><a href="https://linkedn.com/share?url=@Request.Url.AbsoluteUri\@Url.Action("ProductDetail","Shop",new { productId = Model.productId })" target="_blank"><i class="icon-social-linkedin icons"></i></a></li>
 
-                                    
+
                                 </ul>
+                            </div>
+                            <div class="fr__list__btn">
+                                <a class="fr__btn" href="javascript:void(0);" id="addBasket" productId="@Model.productId">Sepete Ekle</a>
                             </div>
                         </div>
                     </div>
@@ -184,3 +187,48 @@
 
 @Html.Partial("~/Views/_Shared/_footer.cshtml")
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(function () {
+     // add basket
+        $("a#addBasket").click(function() {          
+            var productId = $(this).attr("productId");
+            var quantity = 1;         
+            $.ajax({
+                url:'@Url.Action("addCard","Shop")',
+                type: "POST",               
+                data: {productId:productId, quantity: quantity },
+                success: function(response){
+                    //$("span#itemCount").text(response.length);
+                    alert(JSON.stringify(response));
+                    var List = '<div class="shp__single__product">';
+                    //$.each(response, function (index, value) {
+                    //List+='<div class="shp__single__product">';
+                    //List +='<div class="shp__pro__thumb">';
+                    //List +='<a href="#">';
+                    //List +='<img src = "' + value + '" /> </a ></div > ';
+                    //List +='<div class="shp__pro__details">';
+                    //List +='<h2>';
+                    //List +='<a href="product-details.html">' + value.product.productName + '</a>';
+                    //List +='</h2 > ';
+                    // List +='<span class="quantity">Adet:' + value.quantity + '</span>';
+                    // List +='<span class="shp__price">₺' + value.product.price + '</span>';
+                    //List +='</div >';
+                    //List +='<div class="remove__btn">';
+                    //List +='<a href="#" title="Remove this item"><i class="zmdi zmdi-close"></i>';
+                    //List +='</a>';
+                    //List +='</div>';
+                    // List += '</div>';
+                      // $('div.shp__cart__wrap').html(List);
+                    //});                   
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                  //  alert(xhr.status);
+                  //  alert(thrownError);
+                }
+            });
+        });
+
+    });
+
+</script>

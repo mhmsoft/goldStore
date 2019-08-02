@@ -40,21 +40,31 @@
                             <tbody>
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
-                                        <td class="product-thumbnail"><a href="#">
-                                            <img src="@Url.Action("Thumbnail","Shop",new { width = 290, height = 385, Id = item.product.productId, _imageId = item.product.productImage.FirstOrDefault().imageId })" alt="product img" /></a></td>
-                                        <td class="product-name">
-                                            <a href="#">@item.product.productName</a>
-                                            <ul class="pro__prize">
-                                                <li class="old__prize">₺@item.product.oldPrice</li>
-                                                <li>₺>@item.product.price</li>
-                                            </ul>
-                                        </td>
-                                        <td class="product-price"><span class="amount">₺@item.product.price</span></td>
-                                        <td class="product-quantity"><input type="number" value="@item.quantity" /></td>
-                                        <td class="product-subtotal">@(item.quantity*item.product.price)</td>
-                                        <td class="product-remove"><a href="#"><i class="icon-trash icons"></i></a></td>
-                                    </tr>
+                                    if (item != null)
+                                    {
+                                        <tr id="@item.Id">
+                                            <td class="product-thumbnail">
+                                                <a href="#">
+                                                    <img src="@Url.Action("Thumbnail", "Shop", new { width = 290, height = 385, Id = item.product.productId, _imageId = item.product.productImage.FirstOrDefault().imageId })" alt="product img" />
+                                                </a>
+                                            </td>
+                                            <td class="product-name">
+                                                <a href="#">@item.product.productName</a>
+                                                <ul class="pro__prize">
+                                                    <li class="old__prize">₺@item.product.oldPrice</li>
+                                                    <li>₺>@item.product.price</li>
+                                                </ul>
+                                            </td>
+                                            <td class="product-price"><span class="amount">₺@item.product.price</span></td>
+                                            <td class="product-quantity"><input type="number" value="@item.quantity" /></td>
+                                            <td class="product-subtotal">@(item.quantity * item.product.price)</td>
+                                            <td class="product-remove">
+                                                <a href="javascript:void(0);" id="deleteBasketItem" item="@item.Id" productId="@item.product.productId">
+                                                    <i class="icon-trash icons"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
 
 
@@ -91,23 +101,23 @@
                                 <h6>cart total</h6>
                                 <div class="cart__desk__list">
                                     <ul class="cart__desc">
-                                        <li>cart total</li>
-                                        <li>tax</li>
-                                        <li>shipping</li>
+                                        <li>Toplam Tutar</li>
+                                        <li>Vergi</li>
+                                        <li>Teslimat</li>
                                     </ul>
                                     <ul class="cart__price">
-                                        <li>$909.00</li>
-                                        <li>$9.00</li>
+                                        <li>₺@Model.Sum(x => x.product.price * x.quantity)</li>
+                                        <li>₺ @(Model.Sum(x => x.product.price * x.quantity) * 0.18m)</li>
                                         <li>0</li>
                                     </ul>
                                 </div>
                                 <div class="cart__total">
-                                    <span>order total</span>
-                                    <span>$918.00</span>
+                                    <span>Sipariş Toplam</span>
+                                    <span>₺@(Model.Sum(x => x.product.price * x.quantity) * 1.18m)</span>
                                 </div>
                                 <ul class="payment__btn">
-                                    <li class="active"><a href="#">payment</a></li>
-                                    <li><a href="#">continue shopping</a></li>
+                                    <li class="active"><a href="#">Öde</a></li>
+                                    <li><a href="#">Alışverişe Devam Et</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -124,3 +134,29 @@
 }
 @Html.Partial("~/Views/_Shared/_footer.cshtml")
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(function () {
+        //delete basketItem
+        $("#deleteBasketItem").click(function () {
+            var itemId = $(this).attr("item");
+            var productId = $(this).attr("productId");
+            $.ajax({
+                    type:'POST',
+                    url: '@Url.Action("Remove","Shop")',
+                    data: { productId: productId },
+                success: function (response) {
+                    $("tr#" + itemId).fadeOut(1000);
+                    //sayfayı yenile
+                    location.reload();
+                }
+
+
+
+            });
+
+        });
+
+    });
+</script>

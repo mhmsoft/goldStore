@@ -141,41 +141,47 @@
         $("#orderBy").change(function () {
             $("#pageSizeForm").submit();
         });
-        
+
         // add basket
         $("a#addBasket").click(function() {
           
             var productId = $(this).attr("productId");
             var quantity = 1;
-
+            alert();
             $.ajax({
                 url:'@Url.Action("addCard","Shop")',
                 type: "POST",
+               
                 data: {productId:productId, quantity: quantity },
                 success: function(response){
                     //$("span#itemCount").text(response.length);
-                    //alert(JSON.stringify(response.quantity)); 
+                    alert(JSON.stringify(response));
+                    var List = '<div class="shp__single__product">';
                     //$.each(response, function (index, value) {
-                    //    $(".shp__cart__wrap").append('<div class="shp__single__product">');
-                    //    $(".shp__cart__wrap").append('<div class="shp__pro__thumb">');
-                    //    $(".shp__cart__wrap").append('<a href="#">');
-                    //    $(".shp__cart__wrap").append('<img src = "' + value + '" /> </a ></div > ');
-                    //    $(".shp__cart__wrap").append('<div class="shp__pro__details">');
-                    //    $(".shp__cart__wrap").append('<h2>');
-                    //    $(".shp__cart__wrap").append('<a href="product-details.html">' + value.product.productName + '</a>');
-                    //    $(".shp__cart__wrap").append('</h2 > ');
-                    //    $(".shp__cart__wrap").append('<span class="quantity">Adet:' + value.quantity + '</span>');
-                    //    $(".shp__cart__wrap").append('<span class="shp__price">₺' + value.product.price + '</span>');
-                    //    $(".shp__cart__wrap").append('</div >');
-                    //    $(".shp__cart__wrap").append('<div class="remove__btn">');
-                    //    $(".shp__cart__wrap").append('<a href="#" title="Remove this item"><i class="zmdi zmdi-close"></i>');
-                    //    $(".shp__cart__wrap").append('</a>');
-                    //    $(".shp__cart__wrap").append('</div>');
-                    //    $(".shp__cart__wrap").append('</div>');
-
+                    //List+='<div class="shp__single__product">';
+                    //List +='<div class="shp__pro__thumb">';
+                    //List +='<a href="#">';
+                    //List +='<img src = "' + value + '" /> </a ></div > ';
+                    //List +='<div class="shp__pro__details">';
+                    //List +='<h2>';
+                    //List +='<a href="product-details.html">' + value.product.productName + '</a>';
+                    //List +='</h2 > ';
+                    // List +='<span class="quantity">Adet:' + value.quantity + '</span>';
+                    // List +='<span class="shp__price">₺' + value.product.price + '</span>';
+                    //List +='</div >';
+                    //List +='<div class="remove__btn">';
+                    //List +='<a href="#" title="Remove this item"><i class="zmdi zmdi-close"></i>';
+                    //List +='</a>';
+                    //List +='</div>';
+                    // List += '</div>';
+                      // $('div.shp__cart__wrap').html(List);
                     //});
 
                    
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
                 }
             });
         });
