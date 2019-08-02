@@ -9,6 +9,12 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using goldStore.Models.ViewModel;
+using goldStore.Areas.Panel.Models;
+using System.Net.Configuration;
+using System.Net.Mail;
+using System.Net;
+using System.Configuration;
 
 namespace goldStore.Controllers
 {
@@ -17,6 +23,7 @@ namespace goldStore.Controllers
         ProductRepository repoProduct = new ProductRepository(new Areas.Panel.Models.goldstoreEntities());
         CategoryRepository repoCategory = new CategoryRepository(new Areas.Panel.Models.goldstoreEntities());
         BrandRepository repoBrand= new BrandRepository(new Areas.Panel.Models.goldstoreEntities());
+       UserRepository repoUser = new UserRepository(new Areas.Panel.Models.goldstoreEntities());
         // GET: Shop
         public ActionResult Index()
         {
@@ -157,6 +164,173 @@ namespace goldStore.Controllers
             }
 
         }
+        [NonAction]
+        private int isExistInCard(int id)
+        {
+            List<BasketItem> card = (List<BasketItem>)Session["card"];
+            for (int i = 0; i < card.Count; i++)
+                if (card[i].product.productId.Equals(id))
+                    return i;
+            return -1;
+        }
+       
+        public string AddCard(int productId, int quantity)
+        {
+            string message = "";
+            product _product = repoProduct.Get(productId);
+            if (Session["card"] == null)
+            {
+                List<BasketItem> Card = new List<BasketItem>();
+                Card.Add(new BasketItem()
+                {
+                    product = _product,
+                    quantity = quantity,                 
+                    DateCreated = DateTime.Now
+                });
+                Session["card"] = Card;
+                message = "Eklendi";
+
+            }
+            else
+            {
+                List<BasketItem> card = (List<BasketItem>)Session["card"];
+                // sepette eklenen ürünün  sepetteki sıra numarasına bakılır. varsa sepetteki sıra no gönderilir, yoksa -1 değeri gönderilir.
+                int index = isExistInCard(productId);
+                // sepette eklenen ürün varsa
+                if (index != -1)
+                {
+                    // sadece adedini gelen quantity kadar arttıracak.
+                    card[index].quantity += quantity;
+                }
+                // sepette girilen ürün yoksa 
+                else
+                {
+                    // sepete ekle
+                    card.Add(new BasketItem
+                    {
+                        product = _product,
+                        quantity = quantity,
+                        DateCreated = DateTime.Now
+                    });
+                }
+                Session["card"] = card;
+                message = "karta eklendi";
+            }
+            return message;
+        }
+        // sepetteki elemanı silme
+        public string Remove(int productId)
+        {
+            string message = "";
+            List<BasketItem> card = (List<BasketItem>)Session["card"];
+            if (card.Exists(x => x.product.productId == productId))
+            {
+                int index = isExistInCard(productId);
+
+                card.RemoveAt(index);
+                Session["card"] = card;
+                message = "Silindi";
+            }
+            return message;
+        }
+
+        public ActionResult Basket()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "User")]
+        public ActionResult CheckOut()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            user availableUser = repoUser.GetAll().Where(x => x.email == User.Identity.Name).FirstOrDefault();
+
+            return View(model);
+
+        }
+        public ActionResult completeCheckOut()
+        {
+
+            string message = "";
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            user availableUser = db.user.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+            orders newOrder = new orders()
+            {
+                orderDate = DateTime.Now,
+                customerId = availableUser.userId
+
+            };
+            db.orders.Add(newOrder);
+            db.SaveChanges();
+
+            if (Session["card"] != null)
+            {
+                List<BasketItem> Basket = (List<BasketItem>)Session["card"];
+                orderDetails newOrderDetail = new orderDetails();
+                foreach (var item in Basket)
+                {
+                    newOrderDetail.orderId = newOrder.orderId;
+                    newOrderDetail.productId = item.product.productId;
+                    newOrderDetail.quantity = item.quantity;
+
+                    db.orderDetails.Add(newOrderDetail);
+                    db.SaveChanges();
+                }
+                // mail Gönderecek
+                SendOrderInfo(availableUser.Email);
+                message = " Sipariş işlemi tamamlandı. siparişiniz ile ilgili bilgi mailinize gönderilmiştir. <br/>" +
+                  "Ecommerce sayfanızda sipariş detaylarını görebilirisiniz. Detay için aşağıdaki linke tıklayınız" +
+                      "<a href='/Account/MyOrders'></a> ";
+
+            }
+            return Content(message);
+
+        }
+        [NonAction]
+        public void SendOrderInfo(string emailID)
+        {
+            SmtpSection network = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+            try
+            {
+                var url = "/Account/MyOrders";
+                var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, url);
+                var fromEmail = new MailAddress(network.Network.UserName, "Goldstore Sipariş Bilgisi");
+                var toEmail = new MailAddress(emailID);
+
+                string subject = "Goldstore Sipariş Bilgisi";
+                string body = "<br/><br/>Goldstore sayfanızda sipariş detaylarını görebilirisiniz. Detay için aşağıdaki linke tıklayınız" +
+                      " <br/><br/><a href='" + link + "'>" + link + "</a> ";
+                var smtp = new SmtpClient
+                {
+                    Host = network.Network.Host,
+                    Port = network.Network.Port,
+                    EnableSsl = network.Network.EnableSsl,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = network.Network.DefaultCredentials,
+                    Credentials = new NetworkCredential(network.Network.UserName, network.Network.Password)
+                };
+                using (var message = new MailMessage(fromEmail, toEmail)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                })
+                    smtp.Send(message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }
+
+
+
