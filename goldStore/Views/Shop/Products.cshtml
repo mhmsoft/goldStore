@@ -46,7 +46,7 @@
                                         <ul class="product__action">
                                             <li><a href="@Url.Action("WishList", "Account")"><i class="icon-heart icons"></i></a></li>
 
-                                            <li><a href="@Url.Action("Basket", "Shop")"><i class="icon-handbag icons"></i></a></li>
+                                            <li><a href="javascript:void(0);" id="addBasket"  productId="@product.productId"><i class="icon-handbag icons"></i></a></li>
 
                                             <li><a href="@Url.Action("Compare", "Shop"))"><i class="icon-shuffle icons"></i></a></li>
                                         </ul>
@@ -95,7 +95,7 @@
                                                 @product.description
                                             </p>
                                             <div class="fr__list__btn">
-                                                <a class="fr__btn" href="@Url.Action("Basket", "Shop")">Sepete Ekle</a>
+                                                <a class="fr__btn" href="javascript:void(0);" id="addBasket" productId="@product.productId">Sepete Ekle</a>
                                             </div>
                                         </div>
                                     </div>
@@ -140,6 +140,44 @@
         });
         $("#orderBy").change(function () {
             $("#pageSizeForm").submit();
+        });
+        
+        // add basket
+        $("a#addBasket").click(function() {
+          
+            var productId = $(this).attr("productId");
+            var quantity = 1;
+
+            $.ajax({
+                url:'@Url.Action("addCard","Shop")',
+                type: "POST",
+                data: {productId:productId, quantity: quantity },
+                success: function(response){
+                    //$("span#itemCount").text(response.length);
+                    //alert(JSON.stringify(response.quantity)); 
+                    //$.each(response, function (index, value) {
+                    //    $(".shp__cart__wrap").append('<div class="shp__single__product">');
+                    //    $(".shp__cart__wrap").append('<div class="shp__pro__thumb">');
+                    //    $(".shp__cart__wrap").append('<a href="#">');
+                    //    $(".shp__cart__wrap").append('<img src = "' + value + '" /> </a ></div > ');
+                    //    $(".shp__cart__wrap").append('<div class="shp__pro__details">');
+                    //    $(".shp__cart__wrap").append('<h2>');
+                    //    $(".shp__cart__wrap").append('<a href="product-details.html">' + value.product.productName + '</a>');
+                    //    $(".shp__cart__wrap").append('</h2 > ');
+                    //    $(".shp__cart__wrap").append('<span class="quantity">Adet:' + value.quantity + '</span>');
+                    //    $(".shp__cart__wrap").append('<span class="shp__price">₺' + value.product.price + '</span>');
+                    //    $(".shp__cart__wrap").append('</div >');
+                    //    $(".shp__cart__wrap").append('<div class="remove__btn">');
+                    //    $(".shp__cart__wrap").append('<a href="#" title="Remove this item"><i class="zmdi zmdi-close"></i>');
+                    //    $(".shp__cart__wrap").append('</a>');
+                    //    $(".shp__cart__wrap").append('</div>');
+                    //    $(".shp__cart__wrap").append('</div>');
+
+                    //});
+
+                   
+                }
+            });
         });
     });
 </script>

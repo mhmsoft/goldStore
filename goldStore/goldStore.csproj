@@ -1275,6 +1275,12 @@
       <DependentUpon>GSModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Areas\Panel\Models\Interface\IRepository.cs" />
+    <Compile Include="Areas\Panel\Models\orderDetails.cs">
+      <DependentUpon>GSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Panel\Models\orders.cs">
+      <DependentUpon>GSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Panel\Models\product.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
@@ -1292,6 +1298,9 @@
     <Compile Include="Areas\Panel\Models\user.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Panel\Models\wishlist.cs">
+      <DependentUpon>GSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Panel\PanelAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
@@ -1301,6 +1310,7 @@
     </Compile>
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ViewModel\BasketItem.cs" />
+    <Compile Include="Models\ViewModel\CheckOut.cs" />
     <Compile Include="Models\ViewModel\Login.cs" />
     <Compile Include="Models\ViewModel\Register.cs" />
     <Compile Include="Models\ViewModel\ResetPassword.cs" />
@@ -1447,6 +1457,7 @@
     <Content Include="Views\User\ResetPassword.cshtml" />
     <Content Include="Views\_Shared\_LayoutAccount.cshtml" />
     <Content Include="Views\Account\MyProfile.cshtml" />
+    <Content Include="Views\Shop\Basket.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -11,8 +11,7 @@ namespace goldStore.Models.ViewModel
         public Guid Id { get; set; }
         public product product { get; set; }
         public int quantity { get; set; }       
-        public DateTime DateCreated { get; set; }
-        public int ProductId { get; set; }
+        public DateTime DateCreated { get; set; }        
 
     }
 }

@@ -164,6 +164,7 @@ namespace goldStore.Controllers
             }
 
         }
+
         [NonAction]
         private int isExistInCard(int id)
         {
@@ -172,24 +173,22 @@ namespace goldStore.Controllers
                 if (card[i].product.productId.Equals(id))
                     return i;
             return -1;
-        }
-       
-        public string AddCard(int productId, int quantity)
-        {
-            string message = "";
+        }       
+        [HttpPost]
+        public List<BasketItem> AddCard(int productId, int quantity)
+        {           
             product _product = repoProduct.Get(productId);
             if (Session["card"] == null)
             {
                 List<BasketItem> Card = new List<BasketItem>();
                 Card.Add(new BasketItem()
                 {
+                    Id=Guid.NewGuid(),
                     product = _product,
                     quantity = quantity,                 
                     DateCreated = DateTime.Now
                 });
                 Session["card"] = Card;
-                message = "Eklendi";
-
             }
             else
             {
@@ -214,84 +213,82 @@ namespace goldStore.Controllers
                     });
                 }
                 Session["card"] = card;
-                message = "karta eklendi";
+               
             }
-            return message;
+            return (List<BasketItem>)Session["card"];
         }
         // sepetteki elemanı silme
-        public string Remove(int productId)
-        {
-            string message = "";
+        public List<BasketItem> Remove(int productId)
+        {            
             List<BasketItem> card = (List<BasketItem>)Session["card"];
             if (card.Exists(x => x.product.productId == productId))
             {
                 int index = isExistInCard(productId);
-
                 card.RemoveAt(index);
-                Session["card"] = card;
-                message = "Silindi";
+                Session["card"] = card;                
             }
-            return message;
+            return (List<BasketItem>)Session["card"];
+
         }
 
         public ActionResult Basket()
         {
-            return View();
+            return View((List<BasketItem>)Session["card"]);
         }
 
-        [Authorize(Roles = "User")]
-        public ActionResult CheckOut()
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "User");
-            }
-            user availableUser = repoUser.GetAll().Where(x => x.email == User.Identity.Name).FirstOrDefault();
+        //[Authorize(Roles = "User")]
+        //public ActionResult CheckOut()
+        //{
+        //    if (!User.Identity.IsAuthenticated)
+        //    {
+        //        return RedirectToAction("Login", "User");
+        //    }
+        //    user availableUser = repoUser.GetAll().Where(x => x.email == User.Identity.Name).FirstOrDefault();
 
-            return View(model);
+        //    return View(model);
 
-        }
-        public ActionResult completeCheckOut()
-        {
+        //}
+        //public ActionResult completeCheckOut()
+        //{
 
-            string message = "";
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "User");
-            }
-            user availableUser = db.user.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
-            orders newOrder = new orders()
-            {
-                orderDate = DateTime.Now,
-                customerId = availableUser.userId
+        //    string message = "";
+        //    if (!User.Identity.IsAuthenticated)
+        //    {
+        //        return RedirectToAction("Login", "User");
+        //    }
+        //    user availableUser = db.user.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
+        //    orders newOrder = new orders()
+        //    {
+        //        orderDate = DateTime.Now,
+        //        customerId = availableUser.userId
 
-            };
-            db.orders.Add(newOrder);
-            db.SaveChanges();
+        //    };
+        //    db.orders.Add(newOrder);
+        //    db.SaveChanges();
 
-            if (Session["card"] != null)
-            {
-                List<BasketItem> Basket = (List<BasketItem>)Session["card"];
-                orderDetails newOrderDetail = new orderDetails();
-                foreach (var item in Basket)
-                {
-                    newOrderDetail.orderId = newOrder.orderId;
-                    newOrderDetail.productId = item.product.productId;
-                    newOrderDetail.quantity = item.quantity;
+        //    if (Session["card"] != null)
+        //    {
+        //        List<BasketItem> Basket = (List<BasketItem>)Session["card"];
+        //        orderDetails newOrderDetail = new orderDetails();
+        //        foreach (var item in Basket)
+        //        {
+        //            newOrderDetail.orderId = newOrder.orderId;
+        //            newOrderDetail.productId = item.product.productId;
+        //            newOrderDetail.quantity = item.quantity;
 
-                    db.orderDetails.Add(newOrderDetail);
-                    db.SaveChanges();
-                }
-                // mail Gönderecek
-                SendOrderInfo(availableUser.Email);
-                message = " Sipariş işlemi tamamlandı. siparişiniz ile ilgili bilgi mailinize gönderilmiştir. <br/>" +
-                  "Ecommerce sayfanızda sipariş detaylarını görebilirisiniz. Detay için aşağıdaki linke tıklayınız" +
-                      "<a href='/Account/MyOrders'></a> ";
+        //            db.orderDetails.Add(newOrderDetail);
+        //            db.SaveChanges();
+        //        }
+        //        // mail Gönderecek
+        //        SendOrderInfo(availableUser.email);
+        //        message = " Sipariş işlemi tamamlandı. siparişiniz ile ilgili bilgi mailinize gönderilmiştir. <br/>" +
+        //          "Ecommerce sayfanızda sipariş detaylarını görebilirisiniz. Detay için aşağıdaki linke tıklayınız" +
+        //              "<a href='/Account/MyOrders'></a> ";
 
-            }
-            return Content(message);
+        //    }
+        //    return Content(message);
 
-        }
+        //}
         [NonAction]
         public void SendOrderInfo(string emailID)
         {

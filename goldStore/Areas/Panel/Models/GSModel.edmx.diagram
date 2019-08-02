@@ -8,13 +8,21 @@
         <EntityTypeShape EntityType="goldstoreModel.brand" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="goldstoreModel.category" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="goldstoreModel.product" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="goldstoreModel.productImage" Width="1.5" PointX="5.25" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="goldstoreModel.productImage" Width="1.5" PointX="4.875" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="goldstoreModel.role" Width="1.5" PointX="2.75" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="goldstoreModel.user" Width="1.5" PointX="5" PointY="6" IsExpanded="true" />
         <AssociationConnector Association="goldstoreModel.FK__product__brandId__15502E78" ManuallyRouted="false" />
         <AssociationConnector Association="goldstoreModel.FK__product__categor__145C0A3F" ManuallyRouted="false" />
         <AssociationConnector Association="goldstoreModel.FK__productIm__produ__182C9B23" ManuallyRouted="false" />
         <AssociationConnector Association="goldstoreModel.FK__user__roleId__1CF15040" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="goldstoreModel.orderDetails" Width="1.5" PointX="7.5" PointY="0.75" />
+        <EntityTypeShape EntityType="goldstoreModel.orders" Width="1.5" PointX="5.5" PointY="16.375" />
+        <EntityTypeShape EntityType="goldstoreModel.wishlist" Width="1.5" PointX="9.75" PointY="7.375" />
+        <AssociationConnector Association="goldstoreModel.fkOrders" />
+        <AssociationConnector Association="goldstoreModel.fkProduct" />
+        <AssociationConnector Association="goldstoreModel.FK__orders__customer__36B12243" />
+        <AssociationConnector Association="goldstoreModel.FK__wishlist__produc__3F466844" />
+        <AssociationConnector Association="goldstoreModel.FK__wishlist__userId__403A8C7D" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
