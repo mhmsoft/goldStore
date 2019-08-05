@@ -46,7 +46,7 @@
                                         <ul class="product__action">
                                             <li><a href="@Url.Action("WishList", "Account")"><i class="icon-heart icons"></i></a></li>
 
-                                            <li><a href="javascript:void(0);" id="addBasket"  productId="@product.productId"><i class="icon-handbag icons"></i></a></li>
+                                            <li><a href="@Url.Action("AddCard","Shop",new {productId=product.productId,quantity=1 })" id="addBasket"  productId="@product.productId"><i class="icon-handbag icons"></i></a></li>
 
                                             <li><a href="@Url.Action("Compare", "Shop"))"><i class="icon-shuffle icons"></i></a></li>
                                         </ul>
@@ -143,40 +143,15 @@
         });
 
         // add basket
-        $("a#addBasket").click(function() {
-          
+        @*$("a#addBasket").click(function() {
             var productId = $(this).attr("productId");
             var quantity = 1;
-            alert();
             $.ajax({
                 url:'@Url.Action("addCard","Shop")',
                 type: "POST",
                
                 data: {productId:productId, quantity: quantity },
                 success: function(response){
-                    //$("span#itemCount").text(response.length);
-                    alert(JSON.stringify(response));
-                    var List = '<div class="shp__single__product">';
-                    //$.each(response, function (index, value) {
-                    //List+='<div class="shp__single__product">';
-                    //List +='<div class="shp__pro__thumb">';
-                    //List +='<a href="#">';
-                    //List +='<img src = "' + value + '" /> </a ></div > ';
-                    //List +='<div class="shp__pro__details">';
-                    //List +='<h2>';
-                    //List +='<a href="product-details.html">' + value.product.productName + '</a>';
-                    //List +='</h2 > ';
-                    // List +='<span class="quantity">Adet:' + value.quantity + '</span>';
-                    // List +='<span class="shp__price">₺' + value.product.price + '</span>';
-                    //List +='</div >';
-                    //List +='<div class="remove__btn">';
-                    //List +='<a href="#" title="Remove this item"><i class="zmdi zmdi-close"></i>';
-                    //List +='</a>';
-                    //List +='</div>';
-                    // List += '</div>';
-                      // $('div.shp__cart__wrap').html(List);
-                    //});
-
                    
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
@@ -184,7 +159,7 @@
                     alert(thrownError);
                 }
             });
-        });
+        });*@
     });
 </script>
 

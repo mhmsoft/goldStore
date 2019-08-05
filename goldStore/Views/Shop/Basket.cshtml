@@ -38,10 +38,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model)
+                                @if (Model.Any())
                                 {
-                                    if (item != null)
+                                    foreach (var item in Model)
                                     {
+                                        if (item != null)
+                                        {
                                         <tr id="@item.Id">
                                             <td class="product-thumbnail">
                                                 <a href="#">
@@ -64,10 +66,10 @@
                                                 </a>
                                             </td>
                                         </tr>
+                                        }
                                     }
+
                                 }
-
-
                             </tbody>
                         </table>
                     </div>

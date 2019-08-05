@@ -174,8 +174,8 @@ namespace goldStore.Controllers
                     return i;
             return -1;
         }       
-        [HttpPost]
-        public JsonResult AddCard(int productId, int quantity)
+       
+        public ActionResult AddCard(int productId, int quantity)
         {           
             product _product = repoProduct.Get(productId);
             if (Session["card"] == null)
@@ -215,7 +215,8 @@ namespace goldStore.Controllers
                 Session["card"] = card;
                
             }
-            return Json((List<BasketItem>)Session["card"],JsonRequestBehavior.AllowGet);
+            return RedirectToAction("Index");
+            // return Json((List<BasketItem>)Session["card"],JsonRequestBehavior.AllowGet);
         }
         // sepetteki elemanı silme
         public List<BasketItem> Remove(int productId)
