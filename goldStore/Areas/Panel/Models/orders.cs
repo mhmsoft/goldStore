@@ -23,9 +23,20 @@ namespace goldStore.Areas.Panel.Models
         public int orderId { get; set; }
         public Nullable<int> customerId { get; set; }
         public Nullable<System.DateTime> orderDate { get; set; }
+        public Nullable<bool> isOther { get; set; }
+        public string firstname { get; set; }
+        public string lastname { get; set; }
+        public string address { get; set; }
+        public string city { get; set; }
+        public Nullable<int> postCode { get; set; }
+        public string phone { get; set; }
+        public string email { get; set; }
+        public Nullable<int> paymentType { get; set; }
+        public Nullable<decimal> ShipPrice { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<orderDetails> orderDetails { get; set; }
         public virtual user user { get; set; }
+        public virtual Payment Payment { get; set; }
     }
 }

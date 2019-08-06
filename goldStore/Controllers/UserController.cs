@@ -167,6 +167,7 @@ namespace goldStore.Controllers
                 {
                     _user.loginTime = DateTime.Now;
                     _user.loginAttempt = sayac;
+                  
                     repoUser.Update(_user);
 
                     Session["username"] = _user.email;

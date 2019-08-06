@@ -1284,6 +1284,9 @@
     <Compile Include="Areas\Panel\Models\orders.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Panel\Models\Payment.cs">
+      <DependentUpon>GSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Panel\Models\product.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
@@ -1292,12 +1295,17 @@
     </Compile>
     <Compile Include="Areas\Panel\Models\Repository\BrandRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\CategoryRepository.cs" />
+    <Compile Include="Areas\Panel\Models\Repository\OrderDetailRepository.cs" />
+    <Compile Include="Areas\Panel\Models\Repository\OrderRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\ProductRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\UserRepository.cs" />
     <Compile Include="Areas\Panel\Models\role.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Panel\Models\Security\Crypto.cs" />
+    <Compile Include="Areas\Panel\Models\sysdiagrams.cs">
+      <DependentUpon>GSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Panel\Models\user.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
@@ -1461,6 +1469,7 @@
     <Content Include="Views\_Shared\_LayoutAccount.cshtml" />
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Shop\Basket.cshtml" />
+    <Content Include="Views\Shop\Checkout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

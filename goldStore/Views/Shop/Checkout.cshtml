@@ -1,0 +1,366 @@
+﻿@model goldStore.Areas.Panel.Models.user
+@using goldStore.Models.ViewModel
+@{
+    Layout = null;
+}
+@Html.Partial("~/Views/_Shared/_header.cshtml")
+<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(images/bg/4.jpg) no-repeat scroll center center / cover ;">
+    <div class="ht__bradcaump__wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="bradcaump__inner">
+                        <nav class="bradcaump-inner">
+                            <a class="breadcrumb-item" href="@Url.Action("/")">Anasayfa</a>
+                            <span class="brd-separetor"><i class="zmdi zmdi-chevron-right"></i></span>
+                            <span class="breadcrumb-item active">Ödeme</span>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="checkout-wrap ptb--100">
+    <div class="container">
+        <div class="row">
+            @using (Html.BeginForm("Checkout", "Shop", FormMethod.Post,new { @id="checkoutForm" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-8">
+                    <div class="checkout__inner">
+                        <div class="accordion-list">
+                            <div class="accordion">
+
+                                <div class="accordion__title">
+                                    Kişisel Bilgiler
+                                </div>
+                                <div class="accordion__body">
+                                    <div class="bilinfo">
+                                        <form action="#">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        @Html.EditorFor(model => model.firstName, new { htmlAttributes = new { placeholder = "İsim" } })
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        @Html.EditorFor(model => model.lastName, new { htmlAttributes = new { placeholder = "Soy isim" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="single-input">
+                                                        @Html.EditorFor(model => model.address, new { htmlAttributes = new { placeholder = "Adres" } })
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        @Html.EditorFor(model => model.city, new { htmlAttributes = new { placeholder = "Şehir" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        @Html.EditorFor(model => model.postCode, new { htmlAttributes = new { placeholder = "Posta Kodu" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { placeholder = "Eposta" } })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { placeholder = "Telefon" } })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="accordion__title">
+                                    Farklı Gönderme Bilgileri
+                                </div>
+                                <div class="accordion__body">
+                                    <div class="shipinfo">
+                                        <h3 class="shipinfo__title">Gönderim Adresi</h3>
+                                        <p><b>Adres:</b> </p>
+                                        <input type="checkbox" id="shipbox" name="shipbox" class="ship-to-another-trigger">
+                                          <a class="ship-to-another-trigger">
+                                            <i class="zmdi zmdi-long-arrow-right">
+                                            </i>Farklı bir Adrese Gönderim</a>
+                                        <div class="ship-to-another-content">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        <input type="text" id="ad" name="ad" placeholder="İsim">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        <input type="text" id="soyad" name="soyad" placeholder="Soy İsim">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="single-input">
+                                                        <input type="text" id="adres" name="adres" placeholder="Adres">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        <input type="text" id="sehir" name="sehir" placeholder="Şehir">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        <input type="text" id="postakodu" name="postakodu" placeholder="Posta Kodu">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        <input type="email" id="eposta" name="eposta" placeholder="Eposta">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        <input type="text" id="telefon" name="telefon" placeholder="Telefon">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion__title">
+                                    Gönderme Yöntemi
+                                </div>
+                                <div class="accordion__body">
+                                    <div class="shipmethod">
+                                        <form action="#">
+                                            <div class="single-input">
+                                                <p>
+                                                    <input type="radio" name="shipmethod" id="ship-fast" value="10">
+                                                    <label for="ship-fast">Hızlı Gönderim</label>
+                                                </p>
+                                                <p>Teslimatınız en geç iki gün içerisinde teslim edilir.Hızlı gönderim ücreti 10 TL ücrete tabidir.</p>
+                                            </div>
+                                            <div class="single-input">
+                                                <p>
+                                                    <input type="radio" name="shipmethod" id="ship-normal"  value="10">
+                                                    <label for="ship-normal">Normal Gönderim</label>
+                                                </p>
+                                                <p>Lokasyonunuza göre en geç 1 hafta içerisinde teslimatınız yapılır</p>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="accordion__title">
+                                    Ödeme Tipi
+                                </div>
+                                <div class="accordion__body">
+                                    <div class="paymentinfo">
+                                        <div class="single-method">
+                                            <a href="#"><i class="zmdi zmdi-long-arrow-right"></i>Check/ Money Order</a>
+                                        </div>
+                                        <div class="single-method">
+                                            <a href="#" class="paymentinfo-credit-trigger"><i class="zmdi zmdi-long-arrow-right"></i>Credit Card</a>
+                                        </div>
+                                        <div class="paymentinfo-credit-content">
+                                            <form action="#">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="single-input mt-0">
+                                                            <input type="text" placeholder="Name on card">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="single-input">
+                                                            <select name="bil-country" id="payment-info-type">
+                                                                <option value="select">Card type</option>
+                                                                <option value="card-1">Card type 1</option>
+                                                                <option value="card-2">Card type 2</option>
+                                                                <option value="card-3">Card type 3</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="single-input">
+                                                            <input type="text" placeholder="Credit Card Number*">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="single-input">
+                                                            <select>
+                                                                <option>Select Month</option>
+                                                                <option>Jan</option>
+                                                                <option>Feb</option>
+                                                                <option>Mar</option>
+                                                                <option>Apr</option>
+                                                                <option>May</option>
+                                                                <option>Jun</option>
+                                                                <option>Jul</option>
+                                                                <option>Aug</option>
+                                                                <option>Sep</option>
+                                                                <option>Oct</option>
+                                                                <option>Nov</option>
+                                                                <option>Dec</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="single-input">
+                                                            <select>
+                                                                <option>Select Year</option>
+                                                                <option>2015</option>
+                                                                <option>2016</option>
+                                                                <option>2017</option>
+                                                                <option>2018</option>
+                                                                <option>2019</option>
+                                                                <option>2020</option>
+                                                                <option>2021</option>
+                                                                <option>2022</option>
+                                                                <option>2023</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="single-input">
+                                                            <input type="text" placeholder="Card verification number*">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    @if (Session["Card"] != null)
+                    {
+                        List<BasketItem> sepet = (List<BasketItem>)Session["Card"];
+                        <div class="order-details">
+                            <h5 class="order-details__title">Sepet Ürünleri</h5>
+                            <div class="order-details__item">
+                                @foreach (var item in sepet)
+                                {
+                                    <div class="single-item">
+                                        <div class="single-item__thumb">
+                                            <img src="@Url.Action("Thumbnail", "Shop", new { width = 58, height = 70, Id = item.product.productId, _imageId = item.product.productImage.FirstOrDefault().imageId })" alt="ordered item">
+                                        </div>
+                                        <div class="single-item__content">
+                                            <a href="@Url.Action("ProductDetail","Shop", new { productId = item.product.productId })">@item.product.productName</a>
+                                            <span class="price">₺@item.product.price X @item.quantity</span>
+                                        </div>
+                                        <div class="single-item__remove">
+                                            <a href="@Url.Action("Remove","Shop", new { productId = item.product.productId })"><i class="zmdi zmdi-delete"></i></a>
+                                        </div>
+                                    </div>
+                                }
+
+
+                            </div>
+                            <div class="order-details__count">
+                                <div class="order-details__count__single">
+                                    <h5>Alt Tutar</h5>
+                                    <span class="price">₺ @(sepet.Sum(x => x.product.price * x.quantity))</span>
+                                </div>
+                                <div class="order-details__count__single">
+                                    <h5>Vergi</h5>
+                                    <span class="price">₺ @(sepet.Sum(x => x.product.price * x.quantity) * 0.18m)</span>
+                                </div>
+                                <div class="order-details__count__single">
+                                    <h5>Gönderim</h5>
+                                    <span class="price">₺ 5 </span>
+                                </div>
+                            </div>
+                            <div class="ordre-details__total">
+                                <h5>Sipariş Tutarı</h5>
+                                <span class="price">₺ @(sepet.Sum(x => x.product.price * x.quantity) * 1.18m + 5m)</span>
+                            </div>
+                        </div>
+
+                        <ul class="payment__btn">
+                            <li class="active">
+                            <a href="javascript:void(0);" id="purchase">Öde</a></li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Uyarı!</strong>Sepet Boş
+                        </div>
+                    }
+
+
+                    @if (ViewBag.status == true)
+                    {
+                        <div class="alert alert-success">
+                            <strong>Tebrikler!</strong>@ViewBag.message
+                        </div>
+                    }
+                    else
+                    {
+                        if (ViewBag.message != null)
+                        {
+                            <div class="alert alert-danger">
+                                <strong>Uyarı!</strong>@ViewBag.message
+                            </div>
+                        }
+                    }
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@{
+    Html.RenderAction("PartialBrands");
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(function () {
+     
+           
+            if ($("#ship-fast").is(":checked")){
+              
+                $("#ship-fast").val("10");
+                alert(this.val());
+                $("#ship-normal").prop("checked", false);
+            }
+      
+      
+          
+            if ($("#ship-normal").is(":checked")) {
+
+                $("#ship-normal").val("5");
+                alert(this.val());
+                $("#ship-fast").prop("checked", false);
+            }
+            else
+                alert("seçilmedi");
+     
+
+        $(".ship-to-another-trigger").click(function () {
+            if ($(this).prop("checked") == true) {
+                $(".ship-to-another-content").slideDown(1000);
+                $("#shipbox").val("true");
+            }
+            else {
+                $(".ship-to-another-content").slideUp(1000);
+                $("#shipbox").val("false");
+            }
+        });
+        $("#purchase").click(function () {
+            $("#checkoutForm").submit();
+        });
+       
+    });
+</script>

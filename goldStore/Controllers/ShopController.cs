@@ -20,10 +20,13 @@ namespace goldStore.Controllers
 {
     public class ShopController : Controller
     {
-        ProductRepository repoProduct = new ProductRepository(new Areas.Panel.Models.goldstoreEntities());
-        CategoryRepository repoCategory = new CategoryRepository(new Areas.Panel.Models.goldstoreEntities());
-        BrandRepository repoBrand= new BrandRepository(new Areas.Panel.Models.goldstoreEntities());
-       UserRepository repoUser = new UserRepository(new Areas.Panel.Models.goldstoreEntities());
+        ProductRepository repoProduct           = new ProductRepository(new goldstoreEntities());
+        CategoryRepository repoCategory         = new CategoryRepository(new goldstoreEntities());
+        BrandRepository repoBrand               = new BrandRepository(new goldstoreEntities());
+        UserRepository repoUser                 = new UserRepository(new goldstoreEntities());
+        OrderRepository repoOrder               = new OrderRepository( new goldstoreEntities());
+        OrderDetailRepository repoOrderDetail   = new OrderDetailRepository(new goldstoreEntities());
+
         // GET: Shop
         public ActionResult Index()
         {
@@ -219,7 +222,7 @@ namespace goldStore.Controllers
             // return Json((List<BasketItem>)Session["card"],JsonRequestBehavior.AllowGet);
         }
         // sepetteki elemanı silme
-        public List<BasketItem> Remove(int productId)
+        public  void Remove(int productId)
         {            
             List<BasketItem> card = (List<BasketItem>)Session["card"];
             if (card.Exists(x => x.product.productId == productId))
@@ -228,7 +231,6 @@ namespace goldStore.Controllers
                 card.RemoveAt(index);
                 Session["card"] = card;                
             }
-            return (List<BasketItem>)Session["card"];
 
         }
 
@@ -237,59 +239,124 @@ namespace goldStore.Controllers
             return View((List<BasketItem>)Session["card"]);
         }
 
-        //[Authorize(Roles = "User")]
-        //public ActionResult CheckOut()
-        //{
-        //    if (!User.Identity.IsAuthenticated)
-        //    {
-        //        return RedirectToAction("Login", "User");
-        //    }
-        //    user availableUser = repoUser.GetAll().Where(x => x.email == User.Identity.Name).FirstOrDefault();
+        [Authorize(Roles = "User")]
+        public ActionResult Checkout()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            user _user = repoUser.GetAll().Where(x => x.email == User.Identity.Name).FirstOrDefault();
 
-        //    return View(model);
+            return View(_user);
 
-        //}
-        //public ActionResult completeCheckOut()
-        //{
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "User")]
+        public ActionResult Checkout(user _user,bool?shipbox,int? shipmethod, int?paymenttype)
+        {
+            //shipbox-> shipbox true ise başkası adına yada basşa bir farklı adrese gönderim
+            //shipprice-> Hızlıgönderim:10 tl yada normal gönderim 5 tl
+            //paymenttype_>ödeme tipi 1-havale,2-kredi kartı,3- kapıda ödeme vb.
+            string message = "";
+            bool status=false;
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            user loginUser = repoUser.GetAll().Where(x => x.email == User.Identity.Name).FirstOrDefault();
 
-        //    string message = "";
-        //    if (!User.Identity.IsAuthenticated)
-        //    {
-        //        return RedirectToAction("Login", "User");
-        //    }
-        //    user availableUser = db.user.Where(x => x.Email == User.Identity.Name).FirstOrDefault();
-        //    orders newOrder = new orders()
-        //    {
-        //        orderDate = DateTime.Now,
-        //        customerId = availableUser.userId
+            orders newOrder = new orders();
+            newOrder.customerId = loginUser.userId;
+            // eğer kendine gönderiyorsa
+            if (shipbox != false)
+            {
+                if (_user != null)
+                {
+                    if (paymenttype == null)
+                        message = "Bir ödeme tipi seçmeniz gerekir";
+                    else
+                        newOrder.paymentType = paymenttype;
+                    if (shipmethod == null)
+                        message = "Bir gönderme tipi(Hızlı ya da Normal gönderim) seçmeniz gerekir";
+                    else
+                        newOrder.ShipPrice = shipmethod;
 
-        //    };
-        //    db.orders.Add(newOrder);
-        //    db.SaveChanges();
+                    // faklı birine yada farklı bir adrese göndermiyorsa
+                    newOrder.isOther = false;
 
-        //    if (Session["card"] != null)
-        //    {
-        //        List<BasketItem> Basket = (List<BasketItem>)Session["card"];
-        //        orderDetails newOrderDetail = new orderDetails();
-        //        foreach (var item in Basket)
-        //        {
-        //            newOrderDetail.orderId = newOrder.orderId;
-        //            newOrderDetail.productId = item.product.productId;
-        //            newOrderDetail.quantity = item.quantity;
+                    if (string.IsNullOrEmpty(_user.firstName))
+                    {
+                        message = "isim alanını doldurmanız gerekir";
+                        ViewBag.message = message;
+                        return View();
+                    }
+                    else
+                        newOrder.firstname = _user.firstName;
+                    if (string.IsNullOrEmpty(_user.lastName))
+                    {
+                        message = "Soyad alanını doldurmanız gerekir";
+                        ViewBag.message = message;
+                        return View();
+                    }
+                    else
+                        newOrder.lastname = _user.lastName;
+                    if (string.IsNullOrEmpty(_user.address))
+                    {
+                        message = "adres alanını doldurmanız gerekir";
+                        ViewBag.message = message;
+                        return View();
+                    }
+                    else
+                        newOrder.address = _user.address;
+                    if (string.IsNullOrEmpty(_user.city))
+                    {
+                        message = "Şehir alanını doldurmanız gerekir";
+                        ViewBag.message = message;
+                        return View();
+                    }
+                    else
+                        newOrder.city = _user.city;
+                    if (string.IsNullOrEmpty(_user.phone))
+                    {
+                        message = "telefon alanını doldurmanız gerekir";
+                        ViewBag.message = message;
+                        return View();
+                    }
+                    else
+                        newOrder.phone = _user.phone;
+                    newOrder.postCode = _user.postCode;
+                    // sipariş kaydet
+                    repoOrder.Save(newOrder);
 
-        //            db.orderDetails.Add(newOrderDetail);
-        //            db.SaveChanges();
-        //        }
-        //        // mail Gönderecek
-        //        SendOrderInfo(availableUser.email);
-        //        message = " Sipariş işlemi tamamlandı. siparişiniz ile ilgili bilgi mailinize gönderilmiştir. <br/>" +
-        //          "Ecommerce sayfanızda sipariş detaylarını görebilirisiniz. Detay için aşağıdaki linke tıklayınız" +
-        //              "<a href='/Account/MyOrders'></a> ";
+                    // sepette ürünler varsa
+                    if (Session["card"] != null)
+                    {
+                        List<BasketItem> Basket = (List<BasketItem>)Session["card"];
+                        orderDetails newOrderDetail = new orderDetails();
+                        foreach (var item in Basket)
+                        {
+                            newOrderDetail.orderId = newOrder.orderId;
+                            newOrderDetail.productId = item.product.productId;
+                            newOrderDetail.quantity = item.quantity;
+                            repoOrderDetail.Save(newOrderDetail);
 
-        //    }
-        //    return Content(message);
+                        }
+                        SendOrderInfo(loginUser.email);
+                        message = " Sipariş işlemi tamamlandı. siparişiniz ile ilgili bilgi mailinize gönderilmiştir. <br/>" +
+                                  "Goldstore sayfanızda sipariş detaylarını görebilirisiniz. Detay için aşağıdaki linke tıklayınız";
+                        status = true;     
 
-        //}
+                    }
+                }
+            }
+            ViewBag.message = message;
+            ViewBag.status = status;
+            return View();
+        }
+
+            
         [NonAction]
         public void SendOrderInfo(string emailID)
         {

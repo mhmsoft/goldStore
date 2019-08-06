@@ -12,14 +12,18 @@ namespace goldStore.Areas.Panel.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class orderDetails
+    public partial class Payment
     {
-        public int orderId { get; set; }
-        public int productId { get; set; }
-        public Nullable<int> quantity { get; set; }
-        public int Id { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Payment()
+        {
+            this.orders = new HashSet<orders>();
+        }
     
-        public virtual product product { get; set; }
-        public virtual orders orders { get; set; }
+        public int paymentId { get; set; }
+        public string PaymentName { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<orders> orders { get; set; }
     }
 }
