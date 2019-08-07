@@ -254,7 +254,7 @@ namespace goldStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "User")]
-        public ActionResult Checkout(user _user,bool?shipbox,int? shipmethod, int?paymenttype,)
+        public ActionResult Checkout(user _user,bool?shipbox,int? shipmethod, int?paymenttype,string ad,string soyad,string adres,string sehir,int?postakodu,string eposta,string telefon)
         {
             //shipbox-> shipbox true ise başkası adına yada basşa bir farklı adrese gönderim
             //shipprice-> Hızlıgönderim:10 tl yada normal gönderim 5 tl
@@ -325,6 +325,7 @@ namespace goldStore.Controllers
                     }
                     else
                         newOrder.phone = _user.phone;
+
                     newOrder.postCode = _user.postCode;
                     // sipariş kaydet
                     repoOrder.Save(newOrder);
@@ -348,6 +349,68 @@ namespace goldStore.Controllers
 
                     }
                 }
+            }
+            // farklı birine yada farklı bir adrese gönderiyorsa
+            else
+            {
+               
+                Session["ad"] = ad;
+                Session["soyad"] = soyad;
+                Session["adres"] = adres;
+                Session["sehir"] = sehir;
+              
+                Session["telefon"] = telefon;
+                Session["postakodu"] = postakodu ?? 0;
+                Session["isGuest"] = true;
+
+                if (string.IsNullOrEmpty(ad))
+                {
+                    message = "isim alanı boş bıraktınız";
+                    ViewBag.message = message;
+                    return View();
+                }
+                else
+                    newOrder.firstname = ad;
+                if (string.IsNullOrEmpty(soyad))
+                {
+                    message = "Soyisim alanı boş bıraktınız";
+                    ViewBag.message = message;
+                    return View();
+                }
+                else
+                    newOrder.lastname = soyad;
+                
+                if (string.IsNullOrEmpty(adres))
+                {
+                    message = "Adres alanı boş bıraktınız";
+                    ViewBag.message = message;
+                    return View();
+                }
+
+                else
+                    newOrder.address = adres;
+                if (string.IsNullOrEmpty(sehir))
+                {
+                    message = "Şehir alanı boş bıraktınız";
+                    ViewBag.message = message;
+                    return View();
+                }
+                else
+                    newOrder.city = sehir;
+                if (postakodu != null)
+                    newOrder.postCode = postakodu;
+                if (!string.IsNullOrEmpty(eposta))
+                    newOrder.email = eposta;
+                
+                if (string.IsNullOrEmpty(telefon))
+                {
+                    message = "Telefon alanı boş bıraktınız";
+                    ViewBag.message = message;
+                    return View();
+                }
+
+                else
+                    newOrder.phone = telefon;
             }
             ViewBag.message = message;
             ViewBag.status = status;
