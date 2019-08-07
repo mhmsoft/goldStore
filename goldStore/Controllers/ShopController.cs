@@ -254,7 +254,7 @@ namespace goldStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "User")]
-        public ActionResult Checkout(user _user,bool?shipbox,int? shipmethod, int?paymenttype)
+        public ActionResult Checkout(user _user,bool?shipbox,int? shipmethod, int?paymenttype,)
         {
             //shipbox-> shipbox true ise başkası adına yada basşa bir farklı adrese gönderim
             //shipprice-> Hızlıgönderim:10 tl yada normal gönderim 5 tl
@@ -266,7 +266,6 @@ namespace goldStore.Controllers
                 return RedirectToAction("Login", "User");
             }
             user loginUser = repoUser.GetAll().Where(x => x.email == User.Identity.Name).FirstOrDefault();
-
             orders newOrder = new orders();
             newOrder.customerId = loginUser.userId;
             // eğer kendine gönderiyorsa
@@ -329,7 +328,6 @@ namespace goldStore.Controllers
                     newOrder.postCode = _user.postCode;
                     // sipariş kaydet
                     repoOrder.Save(newOrder);
-
                     // sepette ürünler varsa
                     if (Session["card"] != null)
                     {
