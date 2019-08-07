@@ -88,7 +88,7 @@
                                     <div class="shipinfo">
                                         <h3 class="shipinfo__title">Gönderim Adresi</h3>
                                         <p><b>Adres:</b> </p>
-                                        <input type="checkbox" id="shipbox" name="shipbox" class="ship-to-another-trigger">
+                                        <input type="checkbox" id="shipbox" name="shipbox" checked="@(Session["isGuest"]==null?false:true)" class="ship-to-another-trigger">
                                           <a class="ship-to-another-trigger">
                                             <i class="zmdi zmdi-long-arrow-right">
                                             </i>Farklı bir Adrese Gönderim</a>
@@ -96,39 +96,39 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="single-input">
-                                                        <input type="text" id="ad" name="ad" placeholder="İsim">
+                                                        <input type="text" id="ad" name="ad"  value="@(Session["ad"]??"")" placeholder="İsim">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="single-input">
-                                                        <input type="text" id="soyad" name="soyad" placeholder="Soy İsim">
+                                                        <input type="text" id="soyad" name="soyad" value="@(Session["soyad"]??"")" placeholder="Soy İsim">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="single-input">
-                                                        <input type="text" id="adres" name="adres" placeholder="Adres">
+                                                        <input type="text" id="adres" name="adres" value="@(Session["adres"]??"")" placeholder="Adres">
                                                     </div>
                                                 </div>
 
                                                 <div class="col-md-6">
                                                     <div class="single-input">
-                                                        <input type="text" id="sehir" name="sehir" placeholder="Şehir">
+                                                        <input type="text" id="sehir" name="sehir" value="@(Session["sehir"]??"")" placeholder="Şehir">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="single-input">
-                                                        <input type="text" id="postakodu" name="postakodu" placeholder="Posta Kodu">
+                                                        <input type="text" id="postakodu" name="postakodu" value="@(Session["postakodu"]??"")" placeholder="Posta Kodu">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="single-input">
-                                                        <input type="email" id="eposta" name="eposta" placeholder="Eposta">
+                                                        <input type="email" id="eposta" name="eposta" value="@(Session["eposta"]??"")" placeholder="Eposta">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="single-input">
-                                                        <input type="text" id="telefon" name="telefon" placeholder="Telefon">
+                                                        <input type="text" id="telefon" name="telefon" value="@(Session["telefon"]??"")" placeholder="Telefon">
                                                     </div>
                                                 </div>
                                             </div>
@@ -141,22 +141,21 @@
                                 </div>
                                 <div class="accordion__body">
                                     <div class="shipmethod">
-                                        <form action="#">
                                             <div class="single-input">
                                                 <p>
-                                                    <input type="radio" name="shipmethod" id="ship-fast" value="10">
+                                                    <input type="radio" name="shipmethod" id="ship-fast" value="1">
                                                     <label for="ship-fast">Hızlı Gönderim</label>
                                                 </p>
                                                 <p>Teslimatınız en geç iki gün içerisinde teslim edilir.Hızlı gönderim ücreti 10 TL ücrete tabidir.</p>
                                             </div>
                                             <div class="single-input">
                                                 <p>
-                                                    <input type="radio" name="shipmethod" id="ship-normal"  value="10">
+                                                    <input type="radio" name="shipmethod" id="ship-normal"  value="2">
                                                     <label for="ship-normal">Normal Gönderim</label>
                                                 </p>
                                                 <p>Lokasyonunuza göre en geç 1 hafta içerisinde teslimatınız yapılır</p>
                                             </div>
-                                        </form>
+                                      
                                     </div>
                                 </div>
                                 <div class="accordion__title">
@@ -165,76 +164,59 @@
                                 <div class="accordion__body">
                                     <div class="paymentinfo">
                                         <div class="single-method">
-                                            <a href="#"><i class="zmdi zmdi-long-arrow-right"></i>Check/ Money Order</a>
+                                            <input type="radio" name="paymentmethod" id="havale" value="1">
+                                            <a href="#"><i class="zmdi zmdi-long-arrow-right"></i>Havale</a>
                                         </div>
                                         <div class="single-method">
-                                            <a href="#" class="paymentinfo-credit-trigger"><i class="zmdi zmdi-long-arrow-right"></i>Credit Card</a>
+                                            <input type="radio" name="paymentmethod" id="kredikarti" class=paymentinfo-credit-trigger value="2">
+                                            <a href="javascript:void(0);" class="paymentinfo-credit-trigger"><i class="zmdi zmdi-long-arrow-right"></i>Kredi Kartı</a>
                                         </div>
                                         <div class="paymentinfo-credit-content">
-                                            <form action="#">
+                                        
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="single-input mt-0">
-                                                            <input type="text" placeholder="Name on card">
+                                                            <input type="text" placeholder="Kart üzerinde yazan isim">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="single-input">
-                                                            <select name="bil-country" id="payment-info-type">
-                                                                <option value="select">Card type</option>
-                                                                <option value="card-1">Card type 1</option>
-                                                                <option value="card-2">Card type 2</option>
-                                                                <option value="card-3">Card type 3</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="single-input">
-                                                            <input type="text" placeholder="Credit Card Number*">
+                                                            <input type="text" placeholder="Kredi Kartı No*">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="single-input">
                                                             <select>
-                                                                <option>Select Month</option>
-                                                                <option>Jan</option>
-                                                                <option>Feb</option>
-                                                                <option>Mar</option>
-                                                                <option>Apr</option>
-                                                                <option>May</option>
-                                                                <option>Jun</option>
-                                                                <option>Jul</option>
-                                                                <option>Aug</option>
-                                                                <option>Sep</option>
-                                                                <option>Oct</option>
-                                                                <option>Nov</option>
-                                                                <option>Dec</option>
+                                                                <option>Ay</option>
+                                                                @for (int i = 1; i <=12; i++)
+	                                                            {
+                                                                <option>@i</option>
+	                                                            }   
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="single-input">
                                                             <select>
-                                                                <option>Select Year</option>
-                                                                <option>2015</option>
-                                                                <option>2016</option>
-                                                                <option>2017</option>
-                                                                <option>2018</option>
-                                                                <option>2019</option>
-                                                                <option>2020</option>
-                                                                <option>2021</option>
-                                                                <option>2022</option>
-                                                                <option>2023</option>
+                                                                <option>Yıl</option>
+                                                                @for (int i = 2019; i >= 2010; i--)
+                                                                {
+                                                                    <option>@i</option>
+                                                                }
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <div class="single-input">
-                                                            <input type="text" placeholder="Card verification number*">
+                                                            <input type="text" placeholder="Kartın arkasındaki güvenlik kodu*">
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </form>
+                                           
+                                        </div>
+                                        <div class="single-method">
+                                            <input type="radio" name="paymentmethod" id="Kapidaodeme" value="3">
+                                            <a href="#" class="paymentinfo-credit-trigger"><i class="zmdi zmdi-long-arrow-right"></i>Kapıda Ödeme</a>
                                         </div>
                                     </div>
                                 </div>
@@ -273,17 +255,36 @@
                                     <span class="price">₺ @(sepet.Sum(x => x.product.price * x.quantity))</span>
                                 </div>
                                 <div class="order-details__count__single">
-                                    <h5>Vergi</h5>
-                                    <span class="price">₺ @(sepet.Sum(x => x.product.price * x.quantity) * 0.18m)</span>
+                                    <h5>İndirim</h5>
+                                    @{ decimal indirim = 0;
+
+                                        if (Session["discount"] != null)
+                                        {
+                                            indirim = (decimal)Session["discount"];
+
+                                        }
+                                        <span class="price">₺ @indirim </span>
+
+                                    }
+                                  
                                 </div>
                                 <div class="order-details__count__single">
-                                    <h5>Gönderim</h5>
-                                    <span class="price">₺ 5 </span>
+                                    <h5>Gönderim Tutar</h5>
+                                    @{ decimal gonderim = 0;
+
+                                        if (Session["shipPrice"] != null)
+                                        {
+                                            gonderim =(decimal)Session["shipPrice"];
+
+                                        }
+                                        <span class="price">₺ @gonderim </span> 
+                                        
+                                     }
                                 </div>
                             </div>
                             <div class="ordre-details__total">
                                 <h5>Sipariş Tutarı</h5>
-                                <span class="price">₺ @(sepet.Sum(x => x.product.price * x.quantity) * 1.18m + 5m)</span>
+                                <span class="price">₺ @(sepet.Sum(x => x.product.price * x.quantity) + gonderim-indirim)</span>
                             </div>
                         </div>
 
@@ -327,27 +328,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     $(function () {
-     
-           
-            if ($("#ship-fast").is(":checked")){
-              
-                $("#ship-fast").val("10");
-                alert(this.val());
-                $("#ship-normal").prop("checked", false);
-            }
-      
-      
-          
-            if ($("#ship-normal").is(":checked")) {
 
-                $("#ship-normal").val("5");
-                alert(this.val());
-                $("#ship-fast").prop("checked", false);
-            }
-            else
-                alert("seçilmedi");
-     
 
+        //formu kaydır
         $(".ship-to-another-trigger").click(function () {
             if ($(this).prop("checked") == true) {
                 $(".ship-to-another-content").slideDown(1000);
@@ -358,9 +341,63 @@
                 $("#shipbox").val("false");
             }
         });
+        //  form açılışında başkası adı seçilmişse formu kaydır
+        if ($("#shipbox").is(":checked")) {
+            $(".ship-to-another-content").slideDown(1000);
+        }
+        else
+            $(".ship-to-another-content").slideUp(1000);
+
+        // öde ye basılınca
         $("#purchase").click(function () {
             $("#checkoutForm").submit();
         });
-       
+        // kedi kartına basılınca
+      
+           
+            var trigger = $('#kredikarti'),
+            container = $('.paymentinfo-credit-content');
+        trigger.on('click', function (e) {
+            $(trigger).prop("checked", true);
+               
+                container.slideDown(1000);
+        });
+        $("#havale").click(function () {
+            container.slideUp(1000);
+
+        });
+        $("#Kapidaodeme").click(function () {
+            container.slideUp(1000);
+
+        });
+        //hızlı göndeeri seçilirse
+        $("#ship-fast").on("click", function () {
+              if ($("#ship-fast").is(":checked")) {
+            $.ajax({
+                url: '@Url.Action("applyShipPrice")',
+                type: 'POST',
+                data: { shipmethod: $("#ship-fast").val()},
+                success: function(response) {
+                    location.reload();
+                }
+            });
+        }
+        });
+      
+        // normal gönderi seçilirse
+        $("#ship-normal").on("click", function () {
+           
+         if ($("#ship-normal").is(":checked")) {
+           
+            $.ajax({
+                url: '@Url.Action("applyShipPrice")',
+                type: 'POST',
+                data: { shipmethod: $("#ship-normal").val()},
+                success: function(response) {
+                    location.reload();
+                }
+            });
+        }
+        });
     });
 </script>

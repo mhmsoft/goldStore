@@ -254,11 +254,11 @@ namespace goldStore.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "User")]
-        public ActionResult Checkout(user _user,bool?shipbox,int? shipmethod, int?paymenttype,string ad,string soyad,string adres,string sehir,int?postakodu,string eposta,string telefon)
+        public ActionResult Checkout(user _user,bool?shipbox,int? shipmethod, int? paymentmethod, int?paymenttype,string ad,string soyad,string adres,string sehir,int?postakodu,string eposta,string telefon)
         {
             //shipbox-> shipbox true ise başkası adına yada basşa bir farklı adrese gönderim
-            //shipprice-> Hızlıgönderim:10 tl yada normal gönderim 5 tl
-            //paymenttype_>ödeme tipi 1-havale,2-kredi kartı,3- kapıda ödeme vb.
+            //shipmethod-> Hızlıgönderim:10 tl yada normal gönderim 5 tl
+            //paymentmethod_>ödeme tipi 1-havale,2-kredi kartı,3- kapıda ödeme vb.
             string message = "";
             bool status=false;
             if (!User.Identity.IsAuthenticated)
@@ -268,20 +268,42 @@ namespace goldStore.Controllers
             user loginUser = repoUser.GetAll().Where(x => x.email == User.Identity.Name).FirstOrDefault();
             orders newOrder = new orders();
             newOrder.customerId = loginUser.userId;
+
+            if (paymentmethod == null)
+            {
+                message = "Bir ödeme tipi seçmeniz gerekir";
+                ViewBag.message = message;
+                return View();
+            }
+            else
+                newOrder.paymentType = paymentmethod;
+            if (shipmethod == null)
+            {
+                message = "Bir gönderme tipi(Hızlı ya da Normal gönderim) seçmeniz gerekir";
+                ViewBag.message = message;
+                return View();
+            }
+            else
+            {
+                // hızlı gönderim seçilmişse
+                if (shipmethod == 1)
+                {
+                    newOrder.shipPrice = 10;
+                }
+                   
+                else
+                {
+                    newOrder.shipPrice = 5;
+                   
+                }
+                    
+            }
+
             // eğer kendine gönderiyorsa
-            if (shipbox != false)
+            if (shipbox == null)
             {
                 if (_user != null)
                 {
-                    if (paymenttype == null)
-                        message = "Bir ödeme tipi seçmeniz gerekir";
-                    else
-                        newOrder.paymentType = paymenttype;
-                    if (shipmethod == null)
-                        message = "Bir gönderme tipi(Hızlı ya da Normal gönderim) seçmeniz gerekir";
-                    else
-                        newOrder.ShipPrice = shipmethod;
-
                     // faklı birine yada farklı bir adrese göndermiyorsa
                     newOrder.isOther = false;
 
@@ -329,31 +351,12 @@ namespace goldStore.Controllers
                     newOrder.postCode = _user.postCode;
                     // sipariş kaydet
                     repoOrder.Save(newOrder);
-                    // sepette ürünler varsa
-                    if (Session["card"] != null)
-                    {
-                        List<BasketItem> Basket = (List<BasketItem>)Session["card"];
-                        orderDetails newOrderDetail = new orderDetails();
-                        foreach (var item in Basket)
-                        {
-                            newOrderDetail.orderId = newOrder.orderId;
-                            newOrderDetail.productId = item.product.productId;
-                            newOrderDetail.quantity = item.quantity;
-                            repoOrderDetail.Save(newOrderDetail);
-
-                        }
-                        SendOrderInfo(loginUser.email);
-                        message = " Sipariş işlemi tamamlandı. siparişiniz ile ilgili bilgi mailinize gönderilmiştir. <br/>" +
-                                  "Goldstore sayfanızda sipariş detaylarını görebilirisiniz. Detay için aşağıdaki linke tıklayınız";
-                        status = true;     
-
-                    }
+                   
                 }
             }
             // farklı birine yada farklı bir adrese gönderiyorsa
             else
             {
-               
                 Session["ad"] = ad;
                 Session["soyad"] = soyad;
                 Session["adres"] = adres;
@@ -362,6 +365,7 @@ namespace goldStore.Controllers
                 Session["telefon"] = telefon;
                 Session["postakodu"] = postakodu ?? 0;
                 Session["isGuest"] = true;
+
 
                 if (string.IsNullOrEmpty(ad))
                 {
@@ -386,7 +390,6 @@ namespace goldStore.Controllers
                     ViewBag.message = message;
                     return View();
                 }
-
                 else
                     newOrder.address = adres;
                 if (string.IsNullOrEmpty(sehir))
@@ -408,16 +411,64 @@ namespace goldStore.Controllers
                     ViewBag.message = message;
                     return View();
                 }
-
                 else
                     newOrder.phone = telefon;
+
+                // faklı birine yada farklı bir adrese gönderİyorsa
+                newOrder.isOther = true;
+                repoOrder.Save(newOrder);
+            }
+
+          
+            // sepette ürünler varsa
+            if (Session["card"] != null)
+            {
+                List<BasketItem> Basket = (List<BasketItem>)Session["card"];
+                orderDetails newOrderDetail = new orderDetails();
+                foreach (var item in Basket)
+                {
+                    newOrderDetail.orderId = newOrder.orderId;
+                    newOrderDetail.productId = item.product.productId;
+                    newOrderDetail.quantity = item.quantity;
+                    repoOrderDetail.Save(newOrderDetail);
+
+                }
+                SendOrderInfo(loginUser.email);
+                message = " Sipariş işlemi tamamlandı. siparişiniz ile ilgili bilgi mailinize gönderilmiştir. <br/>" +
+                          "Goldstore sayfanızda sipariş detaylarını görebilirisiniz. Detay için aşağıdaki linke tıklayınız";
+                status = true;
             }
             ViewBag.message = message;
             ViewBag.status = status;
             return View();
         }
 
-            
+        // gönderim tutarı hesapla
+        public string applyShipPrice(int?shipmethod)
+        {
+            string message = "";
+            if(shipmethod!=null)
+            {
+                switch (shipmethod)
+                {
+                    case 1:
+                        {
+                            Session["shipPrice"] = 10m;
+                            message = "Hızlı Gönderim uygulandı";
+                            break;
+                        }
+                    case 2:
+                        {
+                            Session["shipPrice"] = 5m;
+                            message = "Normal Gönderim uygulandı";
+                            break;
+                        }
+                }
+            }
+            return message;
+        }
+
+
         [NonAction]
         public void SendOrderInfo(string emailID)
         {

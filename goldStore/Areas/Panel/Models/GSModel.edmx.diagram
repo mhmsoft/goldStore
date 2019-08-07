@@ -18,13 +18,13 @@
         <EntityTypeShape EntityType="goldstoreModel.wishlist" Width="1.5" PointX="9.75" PointY="7.375" />
         <AssociationConnector Association="goldstoreModel.FK__wishlist__produc__3F466844" />
         <AssociationConnector Association="goldstoreModel.FK__wishlist__userId__403A8C7D" />
-        <EntityTypeShape EntityType="goldstoreModel.coupons" Width="1.5" PointX="7.875" PointY="7.375" />
-        <AssociationConnector Association="goldstoreModel.FK__coupons__userId__44FF419A" />
         <EntityTypeShape EntityType="goldstoreModel.Payment" Width="1.5" PointX="7.375" PointY="3.875" />
         <EntityTypeShape EntityType="goldstoreModel.orderDetails" Width="1.5" PointX="10.25" PointY="10.625" />
         <AssociationConnector Association="goldstoreModel.fkProduct" />
-        <EntityTypeShape EntityType="goldstoreModel.orders" Width="1.5" PointX="12.625" PointY="5.75" />
         <EntityTypeShape EntityType="goldstoreModel.sysdiagrams" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="goldstoreModel.coupons" Width="1.5" PointX="7.25" PointY="7.375" />
+        <AssociationConnector Association="goldstoreModel.FK__coupons__userId__44FF419A" />
+        <EntityTypeShape EntityType="goldstoreModel.orders" Width="1.5" PointX="12.625" PointY="5.625" />
         <AssociationConnector Association="goldstoreModel.fkOrders" />
         <AssociationConnector Association="goldstoreModel.FK__orders__customer__36B12243" />
         <AssociationConnector Association="goldstoreModel.FK__orders__paymentT__49C3F6B7" />

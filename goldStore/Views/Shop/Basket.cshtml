@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<goldStore.Models.ViewModel.BasketItem>
+@using goldStore.Areas.Panel.Models
 @{
     Layout = null;
 }
@@ -104,18 +105,30 @@
                                 <div class="cart__desk__list">
                                     <ul class="cart__desc">
                                         <li>Toplam Tutar</li>
-                                        <li>Vergi</li>
-                                        <li>Teslimat</li>
+                                        <li>İndirim</li>
+                                        
                                     </ul>
                                     <ul class="cart__price">
                                         <li>₺@Model.Sum(x => x.product.price * x.quantity)</li>
-                                        <li>₺ @(Model.Sum(x => x.product.price * x.quantity) * 0.18m)</li>
-                                        <li>0</li>
+                                        <li>
+
+                                            @{
+                                                decimal indirim_tutari = 0;
+                                                if (Session["discount"] != null)
+                                                {
+                                                    coupons _indirim = (coupons)Session["discount"];
+                                                    indirim_tutari = (decimal)_indirim.discount;
+                                                }
+
+                                            }
+                                            ₺ @indirim_tutari
+                                        </li>
+                                     
                                     </ul>
                                 </div>
                                 <div class="cart__total">
                                     <span>Sipariş Toplam</span>
-                                    <span>₺@(Model.Sum(x => x.product.price * x.quantity) * 1.18m)</span>
+                                    <span>₺@(Model.Sum(x => x.product.price * x.quantity) - indirim_tutari)</span>
                                 </div>
                                 <ul class="payment__btn">
                                     <li class="active"><a href="#">Öde</a></li>
@@ -160,6 +173,25 @@
 
         });
 
-    });
+         // indirim uygulama
+        $("#applyDiscount").click(function () {
+            var discountCode = $("#discountCode").val();
+            alert(discountCode);
+            if (discountCode != undefined) {
+
+                $.ajax({
+                    url: '@Url.Action("applyDiscount", "Account")',
+                    type: "POST",
+                    data: { discountCode: discountCode },
+                    success: function (response) {
+
+                        location.reload();
+                    } // end success
+                });// end ajax
+            }// end if
+
+            });// end discount
+    });// end function
+
 </script>
 

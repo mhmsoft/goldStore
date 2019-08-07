@@ -16,12 +16,13 @@ namespace goldStore.Areas.Panel.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string coupon { get; set; }
+        public string couponCode { get; set; }
         public Nullable<decimal> discount { get; set; }
         public Nullable<System.DateTime> created { get; set; }
         public Nullable<System.DateTime> expired { get; set; }
         public Nullable<bool> isActive { get; set; }
         public Nullable<int> userId { get; set; }
+        public Nullable<bool> isUsed { get; set; }
     
         public virtual user user { get; set; }
     }
