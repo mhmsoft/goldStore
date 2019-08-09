@@ -1,5 +1,6 @@
 ﻿@model goldStore.Areas.Panel.Models.user
 @using goldStore.Models.ViewModel
+@using goldStore.Areas.Panel.Models
 @{
     Layout = null;
 }
@@ -24,7 +25,7 @@
 <div class="checkout-wrap ptb--100">
     <div class="container">
         <div class="row">
-            @using (Html.BeginForm("Checkout", "Shop", FormMethod.Post,new { @id="checkoutForm" }))
+            @using (Html.BeginForm("Checkout", "Shop", FormMethod.Post, new { @id = "checkoutForm" }))
             {
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -89,14 +90,15 @@
                                         <h3 class="shipinfo__title">Gönderim Adresi</h3>
                                         <p><b>Adres:</b> </p>
                                         <input type="checkbox" id="shipbox" name="shipbox" checked="@(Session["isGuest"]==null?false:true)" class="ship-to-another-trigger">
-                                          <a class="ship-to-another-trigger">
+                                        <a class="ship-to-another-trigger">
                                             <i class="zmdi zmdi-long-arrow-right">
-                                            </i>Farklı bir Adrese Gönderim</a>
+                                            </i>Farklı bir Adrese Gönderim
+                                        </a>
                                         <div class="ship-to-another-content">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="single-input">
-                                                        <input type="text" id="ad" name="ad"  value="@(Session["ad"]??"")" placeholder="İsim">
+                                                        <input type="text" id="ad" name="ad" value="@(Session["ad"]??"")" placeholder="İsim">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -141,21 +143,41 @@
                                 </div>
                                 <div class="accordion__body">
                                     <div class="shipmethod">
-                                            <div class="single-input">
+                                        <div class="single-input">
+                                            @if (Session["shipPrice"] != null)
+                                            {
+                                                <p>
+                                                    <input type="radio" name="shipmethod" id="ship-fast" @((decimal)Session["shipPrice"] == 10m ? "checked" : "unchecked") value="1">
+                                                    <label for="ship-fast">Hızlı Gönderim</label>
+                                                </p>
+                                            }
+                                            else
+                                            {
                                                 <p>
                                                     <input type="radio" name="shipmethod" id="ship-fast" value="1">
                                                     <label for="ship-fast">Hızlı Gönderim</label>
                                                 </p>
-                                                <p>Teslimatınız en geç iki gün içerisinde teslim edilir.Hızlı gönderim ücreti 10 TL ücrete tabidir.</p>
-                                            </div>
-                                            <div class="single-input">
+                                            }
+                                            <p>Teslimatınız en geç iki gün içerisinde teslim edilir.Hızlı gönderim ücreti 10 TL ücrete tabidir.</p>
+                                        </div>
+                                        <div class="single-input">
+                                            @if (Session["shipPrice"] != null)
+                                            {
                                                 <p>
-                                                    <input type="radio" name="shipmethod" id="ship-normal"  value="2">
+                                                    <input type="radio" name="shipmethod" id="ship-normal" @((decimal)Session["shipPrice"] == 5m ? "checked" : "unchecked") value="2">
                                                     <label for="ship-normal">Normal Gönderim</label>
                                                 </p>
-                                                <p>Lokasyonunuza göre en geç 1 hafta içerisinde teslimatınız yapılır</p>
-                                            </div>
-                                      
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" name="shipmethod" id="ship-normal" value="2">
+                                                <label for="ship-normal">Normal Gönderim</label>
+                                            }
+                                            <p>Lokasyonunuza göre en geç 1 hafta içerisinde teslimatınız yapılır</p>
+
+
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="accordion__title">
@@ -172,47 +194,47 @@
                                             <a href="javascript:void(0);" class="paymentinfo-credit-trigger"><i class="zmdi zmdi-long-arrow-right"></i>Kredi Kartı</a>
                                         </div>
                                         <div class="paymentinfo-credit-content">
-                                        
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="single-input mt-0">
-                                                            <input type="text" placeholder="Kart üzerinde yazan isim">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="single-input">
-                                                            <input type="text" placeholder="Kredi Kartı No*">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="single-input">
-                                                            <select>
-                                                                <option>Ay</option>
-                                                                @for (int i = 1; i <=12; i++)
-	                                                            {
-                                                                <option>@i</option>
-	                                                            }   
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="single-input">
-                                                            <select>
-                                                                <option>Yıl</option>
-                                                                @for (int i = 2019; i >= 2010; i--)
-                                                                {
-                                                                    <option>@i</option>
-                                                                }
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="single-input">
-                                                            <input type="text" placeholder="Kartın arkasındaki güvenlik kodu*">
-                                                        </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="single-input mt-0">
+                                                        <input type="text" placeholder="Kart üzerinde yazan isim">
                                                     </div>
                                                 </div>
-                                           
+                                                <div class="col-md-12">
+                                                    <div class="single-input">
+                                                        <input type="text" placeholder="Kredi Kartı No*">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        <select>
+                                                            <option>Ay</option>
+                                                            @for (int i = 1; i <= 12; i++)
+                                                            {
+                                                                <option>@i</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="single-input">
+                                                        <select>
+                                                            <option>Yıl</option>
+                                                            @for (int i = 2019; i >= 2010; i--)
+                                                            {
+                                                                <option>@i</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="single-input">
+                                                        <input type="text" placeholder="Kartın arkasındaki güvenlik kodu*">
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                         <div class="single-method">
                                             <input type="radio" name="paymentmethod" id="Kapidaodeme" value="3">
@@ -260,13 +282,13 @@
 
                                         if (Session["discount"] != null)
                                         {
-                                            indirim = (decimal)Session["discount"];
-
+                                            coupons coupon = (coupons)Session["discount"];
+                                            indirim =(decimal) coupon.discount;
                                         }
                                         <span class="price">₺ @indirim </span>
 
                                     }
-                                  
+
                                 </div>
                                 <div class="order-details__count__single">
                                     <h5>Gönderim Tutar</h5>
@@ -274,23 +296,24 @@
 
                                         if (Session["shipPrice"] != null)
                                         {
-                                            gonderim =(decimal)Session["shipPrice"];
+                                            gonderim = (decimal)Session["shipPrice"];
 
                                         }
-                                        <span class="price">₺ @gonderim </span> 
-                                        
-                                     }
+                                        <span class="price">₺ @gonderim </span>
+
+                                    }
                                 </div>
                             </div>
                             <div class="ordre-details__total">
                                 <h5>Sipariş Tutarı</h5>
-                                <span class="price">₺ @(sepet.Sum(x => x.product.price * x.quantity) + gonderim-indirim)</span>
+                                <span class="price">₺ @(sepet.Sum(x => x.product.price * x.quantity) + gonderim - indirim)</span>
                             </div>
                         </div>
 
                         <ul class="payment__btn">
                             <li class="active">
-                            <a href="javascript:void(0);" id="purchase">Öde</a></li>
+                                <a href="javascript:void(0);" id="purchase">Öde</a>
+                            </li>
                         </ul>
                     }
                     else
@@ -353,13 +376,13 @@
             $("#checkoutForm").submit();
         });
         // kedi kartına basılınca
-      
-           
+
+
             var trigger = $('#kredikarti'),
             container = $('.paymentinfo-credit-content');
         trigger.on('click', function (e) {
             $(trigger).prop("checked", true);
-               
+
                 container.slideDown(1000);
         });
         $("#havale").click(function () {
@@ -383,18 +406,20 @@
             });
         }
         });
-      
+
         // normal gönderi seçilirse
         $("#ship-normal").on("click", function () {
-           
+
          if ($("#ship-normal").is(":checked")) {
-           
+
             $.ajax({
                 url: '@Url.Action("applyShipPrice")',
                 type: 'POST',
                 data: { shipmethod: $("#ship-normal").val()},
-                success: function(response) {
+                success: function (response) {
+                    $.notify(response);
                     location.reload();
+
                 }
             });
         }

@@ -9,12 +9,16 @@ using System.Web.Mvc;
 
 namespace goldStore.Controllers
 {
+    [Authorize(Roles = "user")]
     public class AccountController : Controller
     {
 
         UserRepository repoUser = new UserRepository(new goldstoreEntities());
+        CouponRepository repoCoupon = new CouponRepository(new goldstoreEntities());
+        OrderRepository repoOrder = new OrderRepository(new goldstoreEntities());
+        WishListRepository repoWishList = new WishListRepository(new goldstoreEntities());
         // GET: Account
-        [Authorize(Roles ="user")]
+
         public ActionResult Index()
         {
             return RedirectToAction("MyProfile");
@@ -63,6 +67,44 @@ namespace goldStore.Controllers
             ViewBag.message = message;
             ViewBag.status = status;
             return View();
+        }
+
+        [HttpPost]
+        public void applyDiscount(string discountCode)
+        {
+            var accountOwner = User.Identity.Name;
+            int customerId = repoUser.GetAll().Where(x => x.email == accountOwner).FirstOrDefault().userId;
+            var _discount = repoUser.Get(customerId).coupons.FirstOrDefault(i => i.isActive == true && i.couponCode == discountCode && DateTime.Now < i.expired).discount;
+            if (_discount != null)
+            {
+                coupons _indirim = new coupons()
+                {
+                    discount = _discount,
+                    couponCode = discountCode
+                };
+                Session["discount"] = _indirim;
+            }
+        }
+        public ActionResult Coupons()
+        {
+            var customerId = repoUser.GetAll().Where(u => u.email == User.Identity.Name).FirstOrDefault().userId;
+            return View(repoCoupon.GetAll().Where(x=>x.userId==customerId));
+        }
+        public ActionResult Myorders()
+        {
+            var customerId = repoUser.GetAll().Where(u => u.email == User.Identity.Name).FirstOrDefault().userId;
+            return View(repoOrder.GetAll().Where(x => x.customerId == customerId));
+        }
+        public ActionResult Wishlist()
+        {
+            var customerId = repoUser.GetAll().Where(u => u.email == User.Identity.Name).FirstOrDefault().userId;
+            return View(repoWishList.GetAll().Where(x => x.userId == customerId));
+        }
+        [HttpPost]
+        public void DeleteWishItem(int id)
+        {
+            var favourite = repoWishList.Get(id);
+            repoWishList.Delete(favourite);
         }
     }
 }

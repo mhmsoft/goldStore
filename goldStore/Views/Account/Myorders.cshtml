@@ -1,0 +1,101 @@
+﻿@model IEnumerable<goldStore.Areas.Panel.Models.orders>
+@{
+    Layout = null;
+}
+
+@Html.Partial("~/Views/_Shared/_header.cshtml")
+
+<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(/Asset/images/bg/4.jpg) no-repeat scroll center center / cover ;">
+    <div class="ht__bradcaump__wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="bradcaump__inner">
+                        <nav class="bradcaump-inner">
+                            <a class="breadcrumb-item" href="@Url.Action("/","Account")">Hesabım</a>
+                            <span class="brd-separetor"><i class="zmdi zmdi-chevron-right"></i></span>
+                            <span class="breadcrumb-item active">Favori Listem</span>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wishlist-area ptb--100 bg__white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="wishlist-content">
+
+
+                    @if (Model.Any())
+                    {
+                        <div class="wishlist-table-area table-responsive">
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Sipariş Tarihi</th>
+                                        <th>Resim</th>
+                                        <th>Ürün</th>
+                                        <th>Adet</th>
+                                        <th>Birim Fiyat</th>
+                                        <th>Tutar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var m in Model)
+                                    {
+                                        foreach (var item in m.orderDetails)
+                                        {
+                                            <tr>
+                                                <td>@m.orderDate</td>
+                                                <td>
+                                                    <a href="@Url.Action("ProductDetails", "Shop", new { productId = item.product.productId })">
+                                                        <img src="@Url.Action("Thumbnail", "Shop", new { width = 50, height = 70, Id =item.productId, _imageId= item.product.productImage.FirstOrDefault().imageId })" alt="">
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="@Url.Action("productDetail", "Shop", new { productId = item.productId })">@item.product.productName</a>
+                                                </td>
+                                                <td>
+                                                    @item.quantity
+                                                </td>
+                                                <td>
+                                                    ₺ @item.product.price
+                                                </td>
+                                                <td>
+                                                    ₺ @string.Format("{0:N2}", (item.product.price * @item.quantity))
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr style="background-color:#ddd7d7">
+                                            <td colspan="4">
+                                                <strong>Adres:</strong>@(m.isOther == true ? m.address + "/" + m.city : m.user.address + "/" + m.user.city)
+                                            </td>
+
+                                            <td colspan="2">
+                                                <strong>Tutar:</strong>₺ @(m.isOther == true ? string.Format("{0:N2}", m.orderPrice) : string.Format("{0:N2}", m.orderDetails.Sum(x => x.product.price * x.quantity) + m.shipPrice - m.discountPrice))
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <p class="alert">Siparişiniz bulunmamaktadır.</p>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>         @{
+                Html.RenderAction("PartialBrands", "Shop");
+            }
+            @Html.Partial("~/Views/_Shared/_footer.cshtml")

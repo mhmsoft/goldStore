@@ -62,6 +62,7 @@
           <Property Name="paymentType" Type="int" />
           <Property Name="shipPrice" Type="decimal" Precision="5" Scale="2" />
           <Property Name="orderPrice" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="discountPrice" Type="decimal" Precision="7" Scale="2" />
         </EntityType>
         <EntityType Name="Payment">
           <Key>
@@ -527,7 +528,7 @@
             <End Role="Payment" EntitySet="Payment" />
             <End Role="orders" EntitySet="orders" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="wishlist">
           <Key>
             <PropertyRef Name="id" />
@@ -653,6 +654,7 @@
           <Property Name="paymentType" Type="Int32" />
           <Property Name="shipPrice" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="orderPrice" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="discountPrice" Type="Decimal" Precision="7" Scale="2" />
           <NavigationProperty Name="orderDetails" Relationship="goldstoreModel.fkOrders" FromRole="orders" ToRole="orderDetails" />
           <NavigationProperty Name="user" Relationship="goldstoreModel.FK__orders__customer__36B12243" FromRole="orders" ToRole="user" />
           <NavigationProperty Name="Payment" Relationship="goldstoreModel.FK__orders__paymentT__49C3F6B7" FromRole="orders" ToRole="Payment" />
@@ -693,7 +695,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -831,6 +833,7 @@
           <EntitySetMapping Name="orders">
             <EntityTypeMapping TypeName="goldstoreModel.orders">
               <MappingFragment StoreEntitySet="orders">
+                <ScalarProperty Name="discountPrice" ColumnName="discountPrice" />
                 <ScalarProperty Name="orderPrice" ColumnName="orderPrice" />
                 <ScalarProperty Name="shipPrice" ColumnName="shipPrice" />
                 <ScalarProperty Name="paymentType" ColumnName="paymentType" />

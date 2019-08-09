@@ -1227,6 +1227,7 @@
     <Content Include="Asset\js\bootstrap.min.js" />
     <Content Include="Asset\js\contact-map.js" />
     <Content Include="Asset\js\main.js" />
+    <Content Include="Asset\js\notify.js" />
     <Content Include="Asset\js\owl.carousel.min.js" />
     <Content Include="Asset\js\plugins.js" />
     <Content Include="Asset\js\slick.min.js" />
@@ -1295,10 +1296,12 @@
     </Compile>
     <Compile Include="Areas\Panel\Models\Repository\BrandRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\CategoryRepository.cs" />
+    <Compile Include="Areas\Panel\Models\Repository\CouponRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\OrderDetailRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\OrderRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\ProductRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\UserRepository.cs" />
+    <Compile Include="Areas\Panel\Models\Repository\WishListRepository.cs" />
     <Compile Include="Areas\Panel\Models\role.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
@@ -1470,6 +1473,9 @@
     <Content Include="Views\Account\MyProfile.cshtml" />
     <Content Include="Views\Shop\Basket.cshtml" />
     <Content Include="Views\Shop\Checkout.cshtml" />
+    <Content Include="Views\Account\Coupons.cshtml" />
+    <Content Include="Views\Account\Wishlist.cshtml" />
+    <Content Include="Views\Account\Myorders.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -24,11 +24,11 @@
         <EntityTypeShape EntityType="goldstoreModel.sysdiagrams" Width="1.5" PointX="7.375" PointY="0.75" />
         <EntityTypeShape EntityType="goldstoreModel.coupons" Width="1.5" PointX="7.25" PointY="7.375" />
         <AssociationConnector Association="goldstoreModel.FK__coupons__userId__44FF419A" />
-        <EntityTypeShape EntityType="goldstoreModel.orders" Width="1.5" PointX="12.625" PointY="5.625" />
+        <EntityTypeShape EntityType="goldstoreModel.orders" Width="1.5" PointX="12.625" PointY="5.5" />
         <AssociationConnector Association="goldstoreModel.fkOrders" />
         <AssociationConnector Association="goldstoreModel.FK__orders__customer__36B12243" />
         <AssociationConnector Association="goldstoreModel.FK__orders__paymentT__49C3F6B7" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

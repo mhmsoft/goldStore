@@ -26,6 +26,7 @@ namespace goldStore.Controllers
         UserRepository repoUser                 = new UserRepository(new goldstoreEntities());
         OrderRepository repoOrder               = new OrderRepository( new goldstoreEntities());
         OrderDetailRepository repoOrderDetail   = new OrderDetailRepository(new goldstoreEntities());
+        CouponRepository repoCoupon             = new CouponRepository(new goldstoreEntities());
 
         // GET: Shop
         public ActionResult Index()
@@ -70,8 +71,8 @@ namespace goldStore.Controllers
 
             int _page = page ?? 1;
             int _pageSize = PageSize ?? 6;
-            TempData["PageSize"] = _pageSize;
-            TempData.Keep("PageSize");
+            TempData["pSize"] = _pageSize;
+            TempData.Keep("pSize");
 
             var result = repoProduct.GetAll();
             // eğer markaya göre bir filtreleme istendiğinde
@@ -98,14 +99,14 @@ namespace goldStore.Controllers
             {
                 result = result.OrderBy(x => x.price).ToList();
                 TempData["orderby"] = 1;
-                TempData.Keep("orderby");
+                TempData.Keep("orderBy");
             }
             // order by isim seçilmişse
             else if (orderBy ==2)
             {
                 result = result.OrderBy(x => x.productName).ToList();
                 TempData["orderby"] = 2;
-                TempData.Keep("orderby");
+                TempData.Keep("orderBy");
             }
 
             return View(result.ToPagedList(_page,_pageSize));
@@ -218,7 +219,7 @@ namespace goldStore.Controllers
                 Session["card"] = card;
                
             }
-            return RedirectToAction("Index");
+            return Redirect(Request.UrlReferrer.PathAndQuery);
             // return Json((List<BasketItem>)Session["card"],JsonRequestBehavior.AllowGet);
         }
         // sepetteki elemanı silme
@@ -261,6 +262,7 @@ namespace goldStore.Controllers
             //paymentmethod_>ödeme tipi 1-havale,2-kredi kartı,3- kapıda ödeme vb.
             string message = "";
             bool status=false;
+            bool orderCompleted = false;
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Login", "User");
@@ -268,7 +270,7 @@ namespace goldStore.Controllers
             user loginUser = repoUser.GetAll().Where(x => x.email == User.Identity.Name).FirstOrDefault();
             orders newOrder = new orders();
             newOrder.customerId = loginUser.userId;
-
+            newOrder.orderDate = DateTime.Now;
             if (paymentmethod == null)
             {
                 message = "Bir ödeme tipi seçmeniz gerekir";
@@ -433,16 +435,88 @@ namespace goldStore.Controllers
                     repoOrderDetail.Save(newOrderDetail);
 
                 }
+                decimal total = (decimal)Basket.Sum(x => x.quantity * x.product.price);
+                //indirim kullanımı talep edilmişse
+                if (Session["discount"]!=null)
+                {
+                    coupons _discount= (coupons)Session["discount"];
+                    //indirim kullanılıyor.
+                    total -= (decimal)_discount.discount;
+                    // indirim kullanıldığı için indirimi pasif et
+                    coupons usedCoupon = repoCoupon.GetAll().FirstOrDefault(x => x.couponCode == _discount.couponCode);
+                    // kullanıldı olarak işaretle
+                    usedCoupon.isUsed = true;
+                    // durumunu pasif et
+                    usedCoupon.isActive = false;
+                    // değişklilikleri güncelle
+                    repoCoupon.Update(usedCoupon);
+                    // sipariş tablosundaki indirim tutarını ekle
+                    newOrder.discountPrice = _discount.discount;
+                }
+                if ( total >= 2500)
+                {
+                    string couponCode = createCouponCode();
+                    string subject = " Bookstore İndirim Kuponu";
+                    string body = "Tebrikler! 2500 TL alışveriş yaptığınız için % 5 indirim kuponu kazandınız." +
+                                  "Bir sonraki alışverişinizde indirim kuponunuzu kullanmak için son gün:" + DateTime.Now.AddDays(10);
+                    coupons newCoupon = new coupons()
+                    {
+                        userId = loginUser.userId,
+                        isActive = true,
+                        created = DateTime.Now,
+                        expired = DateTime.Now.AddDays(10),
+                        couponCode = couponCode,
+                        Title = "%5 Hediye kuponu",
+                        discount = Basket.Sum(x => x.quantity * x.product.price) * 0.05m,
+                        isUsed = false
+                    };
+                   
+                    //kupon haketmişse kaydediliyor.
+                    repoCoupon.Save(newCoupon);
+                    // kupon haketmişse mail gönderiliyor.
+                    SendCouponMail(User.Identity.Name, couponCode, subject, body);
+                }
+                //sipariş tutarı güncelleniyor
+                newOrder.orderPrice = total;
+                repoOrder.Update(newOrder);
+
                 SendOrderInfo(loginUser.email);
                 message = " Sipariş işlemi tamamlandı. siparişiniz ile ilgili bilgi mailinize gönderilmiştir. <br/>" +
                           "Goldstore sayfanızda sipariş detaylarını görebilirisiniz. Detay için aşağıdaki linke tıklayınız";
                 status = true;
+                // satışı tamamla
+                orderCompleted = true;
+                if(orderCompleted)
+                {
+                    // sepeti temizle;
+                    Session.Remove("card");
+                    //indirim sil
+                    Session.Remove("discount");
+                    // gönderme ücretini sil
+                    Session.Remove("shipPrice");
+
+                }
             }
             ViewBag.message = message;
             ViewBag.status = status;
             return View();
         }
-
+        [HttpPost]
+        public void applyDiscount(string discountCode)
+        {
+            var accountOwner = User.Identity.Name;
+            int customerId = repoUser.GetAll().Where(x => x.email == accountOwner).FirstOrDefault().userId;
+            var _discount = repoUser.Get(customerId).coupons.FirstOrDefault(i => i.isActive == true && i.couponCode == discountCode && DateTime.Now < i.expired).discount;
+            if (_discount != null)
+            {
+                coupons _indirim = new coupons()
+                {
+                    discount = _discount,
+                    couponCode = discountCode
+                };
+                Session["discount"] = _indirim;
+            }
+        }
         // gönderim tutarı hesapla
         public string applyShipPrice(int?shipmethod)
         {
@@ -467,8 +541,55 @@ namespace goldStore.Controllers
             }
             return message;
         }
+        //indirim kuponu kodu oluştur.
+        public string createCouponCode()
+        {
+            Random N = new Random();
+            string result = "";
+            char[] expression = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'V', 'Y', 'X', 'W', 'Z', '1', '2', '3', '4', '5','6','7','8','9','0' };
+            for (int i = 0; i < 8; i++)
+            {
+                result += expression[N.Next(expression.Length)].ToString();
+            }
+            return result;
+        }
 
+        [NonAction]
+        public void SendCouponMail(string _email, string _couponCode, string _subject, string _message)
+        {
+            SmtpSection network = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+            try
+            {
+                var url = "/Account/MyCoupons";
+                var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, url);
+                var fromEmail = new MailAddress(network.Network.UserName, _subject);
+                var toEmail = new MailAddress(_email);
 
+                string subject = _subject;
+                string body = "<br/><br/>" + _message +
+                      " <br/><br/><a href='" + link + "'>" + link + "</a> ";
+                var smtp = new SmtpClient
+                {
+                    Host = network.Network.Host,
+                    Port = network.Network.Port,
+                    EnableSsl = network.Network.EnableSsl,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = network.Network.DefaultCredentials,
+                    Credentials = new NetworkCredential(network.Network.UserName, network.Network.Password)
+                };
+                using (var message = new MailMessage(fromEmail, toEmail)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                })
+                    smtp.Send(message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         [NonAction]
         public void SendOrderInfo(string emailID)
         {

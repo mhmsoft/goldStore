@@ -161,14 +161,13 @@
                     {
                         List<BasketItem> sepet = (List<BasketItem>)Session["Card"];
                     <ul class="shoping__total">
-                        <li class="subtotal">Teslimat Tutar:</li>
-                        <li class="total__price">₺ 5</li>
+                     
                         <li class="subtotal">Alt Tutar:</li>
                         <li class="total__price">₺ @(sepet.Sum(x => x.product.price * x.quantity) + 5m)</li>
                     </ul>
                         <ul class="shopping__btn">
                             <li><a href="@Url.Action("Basket","Shop")">Sepete Git</a></li>
-                            <li class="shp__checkout"><a href="@Url.Action("Checkout","Shop")">Öde</a></li>
+                            @*<li class="shp__checkout"><a href="@Url.Action("Checkout","Shop")">Öde</a></li>*@
                         </ul>
                     }
                     </div>

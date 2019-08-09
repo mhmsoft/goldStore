@@ -34,6 +34,7 @@ namespace goldStore.Areas.Panel.Models
         public Nullable<int> paymentType { get; set; }
         public Nullable<decimal> shipPrice { get; set; }
         public Nullable<decimal> orderPrice { get; set; }
+        public Nullable<decimal> discountPrice { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<orderDetails> orderDetails { get; set; }

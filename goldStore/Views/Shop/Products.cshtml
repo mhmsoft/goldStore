@@ -18,7 +18,7 @@
                     @Html.DropDownList("orderBy")
                 </div>
                 <div class="ht__pro__qun">
-                    <span>Showing 1-12 of 1033 products</span>
+                    <span> Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) Of @Model.PageCount</span>
                 </div>
                 <!-- Start List And Grid View -->
                 <ul class="view__mode" role="tablist">
@@ -46,7 +46,8 @@
                                         <ul class="product__action">
                                             <li><a href="@Url.Action("WishList", "Account")"><i class="icon-heart icons"></i></a></li>
 
-                                            <li><a href="@Url.Action("AddCard","Shop",new {productId=product.productId,quantity=1 })" id="addBasket"  productId="@product.productId"><i class="icon-handbag icons"></i></a></li>
+                                            <li><a href="@Url.Action("AddCard","Shop",new {productId=product.productId,quantity=1 })" id="addBasket"  productId="@product.productId">
+                                                <i class="icon-handbag icons"></i></a></li>
 
                                             <li><a href="@Url.Action("Compare", "Shop"))"><i class="icon-shuffle icons"></i></a></li>
                                         </ul>
@@ -95,7 +96,7 @@
                                                 @product.description
                                             </p>
                                             <div class="fr__list__btn">
-                                                <a class="fr__btn" href="javascript:void(0);" id="addBasket" productId="@product.productId">Sepete Ekle</a>
+                                                <a class="fr__btn" href="@Url.Action("AddCard","Shop",new {productId=product.productId,quantity=1 })" id="" productId="@product.productId">Sepete Ekle</a>
                                             </div>
                                         </div>
                                     </div>
@@ -117,12 +118,12 @@
                 <ul class="htc__pagenation">
 
                  @Html.PagedListPager(Model, page => Url.Action("Products", new
-                     {
-                         page,
-                         PageSize = TempData["PageSize"],
-                         orderBy = TempData["orderby"]
+            {
+                page,
+                PageSize =ViewBag.PageSize,
+                orderBy = ViewBag.orderBy
 
-                     }))
+            }))
 
 
                 </ul>

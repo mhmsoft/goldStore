@@ -1,0 +1,47 @@
+﻿@model IEnumerable<goldStore.Areas.Panel.Models.coupons>
+@{
+    Layout = "~/Views/_Shared/_LayoutAccount.cshtml";
+}
+<div class="col-lg-9 col-lg-push-3 col-md-9 col-md-push-3 col-sm-12 col-xs-12">
+    <div class="row">
+        @if (Model.Any())
+        {
+            <div class="wishlist-table-area table-responsive">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Bitiş Tarihi</th>
+                            <th>Açıklama</th>
+                            <th>Kupon kodu</th>
+                            <th>Tutar</th>
+                            <th>Durum</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model)
+                        {
+                            <tr style="@(m.isActive==true?"background-color:#ddd7d7":"")">
+                                <td>@string.Format("{0:dd-MM-yyyy}", (m.expired))</td>
+                                <td>@m.Title</td>
+                                <td>@m.couponCode</td>
+                                <td>@m.discount TL</td>
+                                <td style="@((m.isActive==true && DateTime.Now<m.expired)?"color:green;":"color:red")">@((m.isActive == true && DateTime.Now < m.expired) ? "Aktif" : "Pasif")</td>
+
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        }
+        else
+        {
+            <p class="alert">indirim kuponunuz bulunmamaktadır.</p>
+        }
+
+    </div>
+</div>
+

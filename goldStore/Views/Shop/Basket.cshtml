@@ -90,11 +90,11 @@
                     <div class="row">
                         <div class="col-md-6 col-sm-12 col-xs-12">
                             <div class="ht__coupon__code">
-                                <span>enter your discount code</span>
+                                <span>İndirim kuponu</span>
                                 <div class="coupon__box">
-                                    <input type="text" placeholder="">
+                                    <input id="discountCode" name="discountCode" type="text" placeholder="bir kupona sahipseniz kupon kodunu giriniz">
                                     <div class="ht__cp__btn">
-                                        <a href="#">enter</a>
+                                        <a href="javascript:void(0);" id="applyDiscount">Uygula</a>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                                     <span>₺@(Model.Sum(x => x.product.price * x.quantity) - indirim_tutari)</span>
                                 </div>
                                 <ul class="payment__btn">
-                                    <li class="active"><a href="#">Öde</a></li>
+                                    <li class="active"><a href="@Url.Action("Checkout","Shop")">Öde</a></li>
                                     <li><a href="#">Alışverişe Devam Et</a></li>
                                 </ul>
                             </div>
@@ -175,13 +175,14 @@
 
          // indirim uygulama
         $("#applyDiscount").click(function () {
+          
             var discountCode = $("#discountCode").val();
-            alert(discountCode);
+           
             if (discountCode != undefined) {
-
+               // alert(discountCode);
                 $.ajax({
-                    url: '@Url.Action("applyDiscount", "Account")',
-                    type: "POST",
+                    url: '@Url.Action("applyDiscount", "Shop")',
+                    type: 'POST',
                     data: { discountCode: discountCode },
                     success: function (response) {
 
