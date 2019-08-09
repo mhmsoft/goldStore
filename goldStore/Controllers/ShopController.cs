@@ -98,14 +98,14 @@ namespace goldStore.Controllers
             else if (orderBy ==1)
             {
                 result = result.OrderBy(x => x.price).ToList();
-                TempData["orderby"] = 1;
+                TempData["orderBy"] = 1;
                 TempData.Keep("orderBy");
             }
             // order by isim seçilmişse
             else if (orderBy ==2)
             {
                 result = result.OrderBy(x => x.productName).ToList();
-                TempData["orderby"] = 2;
+                TempData["orderBy"] = 2;
                 TempData.Keep("orderBy");
             }
 

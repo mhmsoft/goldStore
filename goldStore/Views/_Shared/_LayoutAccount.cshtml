@@ -16,21 +16,26 @@
         </div>
     </div>
 </div>
-@RenderBody()
-<div class="col-lg-3 col-lg-pull-9 col-md-3 col-md-pull-9 col-sm-12 col-xs-12 smt-40 xmt-40">
+
+  
+
+<div class="col-md-3">
     <div class="htc__product__leftsidebar">
         <div class="htc__compare__area">
-            <h4 class="title__line--4">compare</h4>
+            <h4 class="title__line--4"></h4>
             <ul class="htc__compare__list">
-                <li><a href="@Url.Action("MyProfile")">Profilim</a></li>
-                <li><a href="@Url.Action("Wishlist")">Favorilerim</a></li>
-                <li><a href="@Url.Action("MyOrders")">Siparişlerim</a></li>
-                <li><a href="@Url.Action("Coupons")">Kuponlarım</a></li>
+                <li><i class="fa fa-user" aria-hidden="true"><a href="@Url.Action("MyProfile")">Profilim</a></i></li>
+                <li><i class="fa fa-heart" aria-hidden="true"><a href="@Url.Action("Wishlist")">Favorilerim</a></i></li>
+                <li><i class="fa fa-first-order" aria-hidden="true"><a href="@Url.Action("MyOrders")">Siparişlerim</a></i></li>
+                <li><i class="fa fa-diamond" aria-hidden="true"><a href="@Url.Action("Coupons")">Kuponlarım</a></i></li>
             </ul>
             <ul class="ht__com__btn">
                 <li><a href="@Url.Action("Signout","User")">Güvenli Çıkış</a></li>
-                
+
             </ul>
         </div>
     </div>
+</div>
+<div class="col-md-9">
+    @RenderBody()
 </div>

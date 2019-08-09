@@ -16,7 +16,11 @@ namespace goldStore.Areas.Panel.Models.Repository
         }
         public void Delete(wishlist model)
         {
-            throw new NotImplementedException();
+            if (model != null)
+            {
+                _context.wishlist.Remove(model);
+                _context.SaveChanges();
+            }
         }
 
         public wishlist Get(int id)

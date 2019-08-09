@@ -44,12 +44,15 @@
                                     </div>
                                     <div class="fr__hover__info">
                                         <ul class="product__action">
-                                            <li><a href="@Url.Action("WishList", "Account")"><i class="icon-heart icons"></i></a></li>
+                                            <li><a title="Favorilerime Ekle" href="javascript:void(0);" id="addWish" productId="@product.productId">
+                                                <i class="icon-heart icons"></i>
+                                                </a>
+                                            </li>
 
-                                            <li><a href="@Url.Action("AddCard","Shop",new {productId=product.productId,quantity=1 })" id="addBasket"  productId="@product.productId">
+                                            <li><a title="Sepete Ekle" href="@Url.Action("AddCard","Shop",new {productId=product.productId,quantity=1 })" id="addBasket" >
                                                 <i class="icon-handbag icons"></i></a></li>
 
-                                            <li><a href="@Url.Action("Compare", "Shop"))"><i class="icon-shuffle icons"></i></a></li>
+                                            <li><a title="Karşılaştır" href="javascript:void(0);" id="compare" productId="@product.productId"><i class="icon-shuffle icons"></i></a></li>
                                         </ul>
                                     </div>
                                     <div class="fr__product__inner">
@@ -144,23 +147,22 @@
         });
 
         // add basket
-        @*$("a#addBasket").click(function() {
+        $("a#addWish").click(function() {
             var productId = $(this).attr("productId");
             var quantity = 1;
             $.ajax({
-                url:'@Url.Action("addCard","Shop")',
+                url:'@Url.Action("addWish","Account")',
                 type: "POST",
-               
                 data: {productId:productId, quantity: quantity },
-                success: function(response){
-                   
+                success: function (response) {
+                    $.notify(response, "info", { position: "middle" });
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    alert(xhr.status);
-                    alert(thrownError);
+                    $.notify(xhr.status,"alert");
+                    $.notify(thrownError);
                 }
             });
-        });*@
+        });
     });
 </script>
 

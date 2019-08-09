@@ -17,11 +17,12 @@ namespace goldStore.Controllers
         CouponRepository repoCoupon = new CouponRepository(new goldstoreEntities());
         OrderRepository repoOrder = new OrderRepository(new goldstoreEntities());
         WishListRepository repoWishList = new WishListRepository(new goldstoreEntities());
+        ProductRepository repoProduct = new ProductRepository(new goldstoreEntities());
         // GET: Account
 
         public ActionResult Index()
         {
-            return RedirectToAction("MyProfile");
+            return View();
         }
         public  ActionResult MyProfile()
         {
@@ -105,6 +106,36 @@ namespace goldStore.Controllers
         {
             var favourite = repoWishList.Get(id);
             repoWishList.Delete(favourite);
+        }
+        [HttpPost]
+        public string AddWish(int productId)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var accountOwner = User.Identity.Name;
+                //favori ekleme
+                // emaili olan kullanıcının user id sini bulalım.
+                int userId = repoUser.GetAll().Where(x => x.email == accountOwner).FirstOrDefault().userId;
+                // favoriler tablosunda bu kullanıcıya ait gelen kitap varmı yokmu
+                int count = repoWishList.GetAll().Where(x => x.userId == userId && x.productId == productId).Count();
+                if (count == 0)
+                {
+                    var product = repoProduct.Get(productId);
+                    wishlist newFavori = new wishlist()
+                    {
+                        productId = productId,
+                        userId = userId
+                    };
+                    repoWishList.Save(newFavori);
+                    return "Favorilerime Eklendi";
+                }
+                else
+                    return "Favorilerime Daha önceden eklemişsiniz";
+
+            }
+            else
+                return "Login olmanız gerekir";
+           
         }
     }
 }

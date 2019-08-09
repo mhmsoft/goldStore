@@ -1223,6 +1223,7 @@
     <Content Include="Asset\images\slider\fornt-img\2.png" />
     <Content Include="Asset\images\test\client\1.png" />
     <Content Include="Asset\images\test\client\2.png" />
+    <Content Include="Asset\images\zemin1.jfif" />
     <Content Include="Asset\js\ajax-mail.js" />
     <Content Include="Asset\js\bootstrap.min.js" />
     <Content Include="Asset\js\contact-map.js" />
@@ -1476,6 +1477,7 @@
     <Content Include="Views\Account\Coupons.cshtml" />
     <Content Include="Views\Account\Wishlist.cshtml" />
     <Content Include="Views\Account\Myorders.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
