@@ -13,6 +13,20 @@ namespace goldStore.Areas.Panel.Models.Repository
         {
             _context = Context;
         }
+        public List<product> BestSellProducts()
+        {
+
+            List<product> bestSellers = new List<product>();
+            var query = _context.orderDetails.OrderByDescending(y => y.quantity).GroupBy(x => x.productId).
+                        Select(x => new { quantity = x.Sum(b => b.quantity), Id = x.Key });
+
+            var get10Products = query.Take(10);
+            foreach (var item in get10Products)
+            {
+                bestSellers.Add(_context.product.SingleOrDefault(x => x.productId == item.Id));
+            }
+            return bestSellers;
+        }
         public void Delete(orderDetails model)
         {
             if (model != null)

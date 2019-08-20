@@ -25,11 +25,12 @@ namespace goldStore.Areas.Panel.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Create(product product,IEnumerable<HttpPostedFileBase> image1)
         {
             if (product != null)
             {
+                product.created = DateTime.Now;
                 repository.Save(product);
             }
             if(image1.First()!=null)
@@ -61,11 +62,12 @@ namespace goldStore.Areas.Panel.Controllers
             return View(repository.Get(id));
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public ActionResult Edit(product product,IEnumerable<HttpPostedFileBase> image1)
         {
             if (product!=null)
             {
+                product.created = DateTime.Now;
                 repository.Update(product);
             }
             if (image1.First() != null)

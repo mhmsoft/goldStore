@@ -1,0 +1,124 @@
+﻿
+@{
+    Layout = null;
+}
+
+@Html.Partial("~/Views/_Shared/_header.cshtml");
+<div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(~/Asset/images/zemin1.jfif) no-repeat scroll center center / cover ;">
+    <div class="ht__bradcaump__wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="bradcaump__inner">
+                        <nav class="bradcaump-inner">
+                            <a class="breadcrumb-item" href="@Url.Action("/","Shop")">Anasayfa</a>
+                            <span class="brd-separetor"><i class="zmdi zmdi-chevron-right"></i></span>
+                            <span class="breadcrumb-item active">İletişim</span>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Bradcaump area -->
+<!-- Start Contact Area -->
+<section class="htc__contact__area ptb--100 bg__white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12 col-xs-12">
+                <div class="map-contacts--2">
+                    <div id="googleMap"></div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+                <h2 class="title__line--6">İletişim</h2>
+                <div class="address">
+                    <div class="address__icon">
+                        <i class="icon-location-pin icons"></i>
+                    </div>
+                    <div class="address__details">
+                        <h2 class="ct__title">Adresimiz</h2>
+                        <p>Bahariye Caddesi No:56,Kadıköy,İstanbul </p>
+                    </div>
+                </div>
+                <div class="address">
+                    <div class="address__icon">
+                        <i class="icon-envelope icons"></i>
+                    </div>
+                    <div class="address__details">
+                        <h2 class="ct__title">Eposta Adreslerimiz</h2>
+                        <p>bilgi@goldstore.com </p>
+                        <p>satis@goldstore.com </p>
+                    </div>
+                </div>
+
+                <div class="address">
+                    <div class="address__icon">
+                        <i class="icon-phone icons"></i>
+                    </div>
+                    <div class="address__details">
+                        <h2 class="ct__title">Telefon Numaralarımız</h2>
+                        <p>123-6586-587456</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="contact-form-wrap mt--60">
+
+                @if (ViewBag.status == true)
+                {
+                    <div class="alert alert-success">
+                        <strong>Tebrikler!</strong>@ViewBag.message
+                    </div>
+                }
+                else
+                {
+                    if (ViewBag.message != null)
+                    {
+                        <div class="alert alert-danger">
+                            <strong>Uyarı!</strong>@ViewBag.message
+                        </div>
+                    }
+                }
+
+                <div class="col-xs-12">
+                    <div class="contact-title">
+                        <h2 class="title__line--6">Bize Yazın</h2>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <form id="contact-form" action="@Url.Action("Contact","Shop")" method="post">
+                        <div class="single-contact-form">
+                            <div class="contact-box name">
+                                <input type="text" name="name" placeholder="İsim*" required>
+                                <input type="email" name="email" placeholder="Eposta*" required>
+                            </div>
+                        </div>
+                        <div class="single-contact-form">
+                            <div class="contact-box subject">
+                                <input type="text" name="subject" placeholder="Konu*" required>
+                            </div>
+                        </div>
+                        <div class="single-contact-form">
+                            <div class="contact-box message">
+                                <textarea name="message" placeholder="Mesajınız"></textarea>
+                            </div>
+                        </div>
+                        <div class="contact-btn">
+                            <button type="submit" class="fv-btn">Gönder</button>
+                        </div>
+                    </form>
+                    <div class="form-output">
+                        <p class="form-messege"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@Html.Partial("~/Views/_Shared/_footer.cshtml");
+
+

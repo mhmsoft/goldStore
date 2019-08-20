@@ -1,4 +1,4 @@
-// When the window has finished loading create our google map below
+﻿// When the window has finished loading create our google map below
         google.maps.event.addDomListener(window, 'load', init);
 
         function init() {
@@ -11,7 +11,7 @@
                 scrollwheel: false,
 
                 // The latitude and longitude to center the map (always required)
-                center: new google.maps.LatLng(23.7286, 90.3854), // New York
+                center: new google.maps.LatLng(40.989003, 29.028734), // Kadıköy İstanbul
 
                 // How you would like to style the map. 
                 // This is where you would paste any style found on Snazzy Maps.

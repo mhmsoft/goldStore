@@ -30,6 +30,7 @@ namespace goldStore.Areas.Panel.Models
         public string description { get; set; }
         public Nullable<int> categoryId { get; set; }
         public Nullable<int> brandId { get; set; }
+        public Nullable<System.DateTime> created { get; set; }
     
         public virtual brand brand { get; set; }
         public virtual category category { get; set; }

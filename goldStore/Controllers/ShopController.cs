@@ -38,9 +38,10 @@ namespace goldStore.Controllers
             // Tüm markaları partial View'e Gönder
             return PartialView(repoBrand.GetAll());
         }
+
         public PartialViewResult PartialNewArrivals()
         {
-            return PartialView();
+            return PartialView(repoProduct.GetAll().OrderByDescending(x => x.created).Take(4).ToList());
         }
 
         public PartialViewResult PartialPrice()
@@ -52,7 +53,41 @@ namespace goldStore.Controllers
         {
             return PartialView(repoCategory.GetAll());
         }
+       
+        // en çok satanlar
+        public PartialViewResult _PartialBestSeller()
+        {
+            return PartialView(repoOrderDetail.BestSellProducts());
+        }
+        // contact
+        public ActionResult Contact()
+        {
+            return View();
+        }
+        //contact post
+        [HttpPost]
+        public ActionResult Contact(string name,string email,string subject, string message)
+        {
+            string Message = "";
+            bool status = true;
+            try { 
+            SendContactMe(email, name, subject, message);
+                Message = "mailiniz tarafımıza ulaşmıştır";
+            }
+            catch
+            {
+                status = false;
+                Message = "bir sorunla karşılaşıldı";
+            }
+            finally
+            {
+                ViewBag.message = Message;
+                ViewBag.status = status;
+              
+            }
+              return View();
 
+        }
         // ürünleri gösteren method
         public ActionResult Products(int?brandId,int?categoryId,decimal?min,decimal?max, int? page, int? PageSize, int? orderBy)
         {
@@ -604,6 +639,45 @@ namespace goldStore.Controllers
                 string subject = "Goldstore Sipariş Bilgisi";
                 string body = "<br/><br/>Goldstore sayfanızda sipariş detaylarını görebilirisiniz. Detay için aşağıdaki linke tıklayınız" +
                       " <br/><br/><a href='" + link + "'>" + link + "</a> ";
+                var smtp = new SmtpClient
+                {
+                    Host = network.Network.Host,
+                    Port = network.Network.Port,
+                    EnableSsl = network.Network.EnableSsl,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = network.Network.DefaultCredentials,
+                    Credentials = new NetworkCredential(network.Network.UserName, network.Network.Password)
+                };
+                using (var message = new MailMessage(fromEmail, toEmail)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                })
+                    smtp.Send(message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [NonAction]
+      
+        public void SendContactMe(string _email, string _name, string _subject, string _message)
+        {
+            SmtpSection network = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
+            try
+            {
+               // var url = "/Account/MyCoupons";
+                //var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, url);
+                var fromEmail = new MailAddress(_email,_subject);
+                var toEmail = new MailAddress("dibutra@gmail.com");
+
+
+                string subject = _subject;
+                string body = "<br/><br/>" + _message +
+                      " <br/><br/> "+ _name;
                 var smtp = new SmtpClient
                 {
                     Host = network.Network.Host,

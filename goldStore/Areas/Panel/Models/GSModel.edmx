@@ -83,6 +83,7 @@
           <Property Name="description" Type="text" />
           <Property Name="categoryId" Type="int" />
           <Property Name="brandId" Type="int" />
+          <Property Name="created" Type="datetime" />
         </EntityType>
         <EntityType Name="productImage">
           <Key>
@@ -215,6 +216,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__user__roleId__19DFD96B">
+          <End Role="role" Type="Self.role" Multiplicity="0..1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="roleId" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="roleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__user__roleId__1CF15040">
           <End Role="role" Type="Self.role" Multiplicity="0..1" />
           <End Role="user" Type="Self.user" Multiplicity="*" />
@@ -316,6 +329,10 @@
             <End Role="product" EntitySet="product" />
             <End Role="productImage" EntitySet="productImage" />
           </AssociationSet>
+          <AssociationSet Name="FK__user__roleId__19DFD96B" Association="Self.FK__user__roleId__19DFD96B">
+            <End Role="role" EntitySet="role" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
           <AssociationSet Name="FK__user__roleId__1CF15040" Association="Self.FK__user__roleId__1CF15040">
             <End Role="role" EntitySet="role" />
             <End Role="user" EntitySet="user" />
@@ -376,6 +393,7 @@
           <NavigationProperty Name="productImage" Relationship="Self.FK__productIm__produ__182C9B23" FromRole="product" ToRole="productImage" />
           <NavigationProperty Name="wishlist" Relationship="goldstoreModel.FK__wishlist__produc__3F466844" FromRole="product" ToRole="wishlist" />
           <NavigationProperty Name="orderDetails" Relationship="goldstoreModel.fkProduct" FromRole="product" ToRole="orderDetails" />
+          <Property Name="created" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="productImage">
           <Key>
@@ -722,6 +740,7 @@
           <EntitySetMapping Name="product">
             <EntityTypeMapping TypeName="goldstoreModel.product">
               <MappingFragment StoreEntitySet="product">
+                <ScalarProperty Name="created" ColumnName="created" />
                 <ScalarProperty Name="productId" ColumnName="productId" />
                 <ScalarProperty Name="productName" ColumnName="productName" />
                 <ScalarProperty Name="oldPrice" ColumnName="oldPrice" />
