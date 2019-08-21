@@ -27,6 +27,7 @@ namespace goldStore.Controllers
         OrderRepository repoOrder               = new OrderRepository( new goldstoreEntities());
         OrderDetailRepository repoOrderDetail   = new OrderDetailRepository(new goldstoreEntities());
         CouponRepository repoCoupon             = new CouponRepository(new goldstoreEntities());
+        commentRepository repoComment           = new commentRepository(new goldstoreEntities());
 
         // GET: Shop
         public ActionResult Index()
@@ -88,8 +89,21 @@ namespace goldStore.Controllers
               return View();
 
         }
+        [HttpPost]
+        public string yorumKaydet(int _urunNo, string _yorumcu,string _isim, string _yorum)
+        {
+            comment model = new comment()
+            {
+                name = _isim,
+                email=_yorumcu,
+                review = _yorum,
+                created = DateTime.Now,
+                productId = _urunNo
+            };
+            return repoComment.yorumKaydet(model);
+        }
         // ürünleri gösteren method
-        public ActionResult Products(int?brandId,int?categoryId,decimal?min,decimal?max, int? page, int? PageSize, int? orderBy)
+        public ActionResult Products(int?brandId,int?categoryId,decimal?min,decimal?max, int? page, int? PageSize, int? orderBy,string search)
         {
             ViewBag.orderBy = new List<SelectListItem>() {
                 new SelectListItem { Text = "Fiyat", Value = "1", Selected = true },
@@ -142,6 +156,14 @@ namespace goldStore.Controllers
                 result = result.OrderBy(x => x.productName).ToList();
                 TempData["orderBy"] = 2;
                 TempData.Keep("orderBy");
+            }
+
+            // arama yapılmışsa
+            else if (!string.IsNullOrEmpty(search))
+            {
+                result = result.Where(x => x.productName.ToLower().Contains(search.ToLower())|| 
+                                           x.category.categoryName.ToLower().Contains(search.ToLower()) ||
+                                           x.brand.brandName.ToLower().Contains(search.ToLower())).ToList();
             }
 
             return View(result.ToPagedList(_page,_pageSize));

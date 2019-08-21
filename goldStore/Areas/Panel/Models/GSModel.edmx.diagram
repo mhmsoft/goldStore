@@ -28,6 +28,8 @@
         <AssociationConnector Association="goldstoreModel.fkOrders" />
         <AssociationConnector Association="goldstoreModel.FK__orders__customer__36B12243" />
         <AssociationConnector Association="goldstoreModel.FK__orders__paymentT__49C3F6B7" />
+        <EntityTypeShape EntityType="goldstoreModel.comment" Width="1.5" PointX="5.25" PointY="12.75" />
+        <AssociationConnector Association="goldstoreModel.FK__comment__product__29221CFB" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,0 +1,108 @@
+﻿@model IEnumerable<goldStore.Areas.Panel.Models.orders>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Panel/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.orderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isOther)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.firstname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lastname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.city)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.postCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.shipPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orderPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.discountPrice)
+        </th>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Payment.PaymentName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.orderDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isOther)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.firstname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lastname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.city)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.postCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.shipPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.orderPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.discountPrice)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.Payment.PaymentName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.orderId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.orderId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.orderId })
+        </td>
+    </tr>
+}
+
+</table>

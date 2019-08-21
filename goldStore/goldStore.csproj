@@ -1673,10 +1673,14 @@
     <Compile Include="Areas\Panel\Controllers\BrandController.cs" />
     <Compile Include="Areas\Panel\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Panel\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Panel\Controllers\SaleController.cs" />
     <Compile Include="Areas\Panel\Models\brand.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Panel\Models\category.cs">
+      <DependentUpon>GSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Panel\Models\comment.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Panel\Models\coupons.cs">
@@ -1715,6 +1719,7 @@
     </Compile>
     <Compile Include="Areas\Panel\Models\Repository\BrandRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\CategoryRepository.cs" />
+    <Compile Include="Areas\Panel\Models\Repository\commentRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\CouponRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\OrderDetailRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\OrderRepository.cs" />
@@ -1885,6 +1890,8 @@
     <Content Include="Areas\Panel\Content\ckeditor\samples\toolbarconfigurator\font\fontello.woff" />
     <Content Include="Areas\Panel\Content\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="Areas\Panel\Content\ckeditor\skins\moono-lisa\readme.md" />
+    <Content Include="Areas\Panel\Views\Sale\Index.cshtml" />
+    <Content Include="Areas\Panel\Views\Sale\saleStatistics.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\_Shared\_header.cshtml" />
     <Content Include="Views\_Shared\_footer.cshtml" />
@@ -1913,6 +1920,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Shop\_PartialBestSeller.cshtml" />
     <Content Include="Views\Shop\Contact.cshtml" />
+    <Content Include="Views\Shop\_PartialComment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

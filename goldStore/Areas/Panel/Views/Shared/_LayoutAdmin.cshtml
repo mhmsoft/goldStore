@@ -41,10 +41,10 @@
                         <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
                             <ul class="nav navbar-nav">
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hesabım <b class="caret"></b></a>
                                     <ul class="dropdown-menu animated fadeInUp">
-                                        <li><a href="/../Account/MyProfile">Profile</a></li>
-                                        <li><a href="/../User/Signout">Logout</a></li>
+                                        <li><a href="/../Account/MyProfile">Profil</a></li>
+                                        <li><a href="/../User/Signout">Güvenli Çıkış</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -65,7 +65,17 @@
                         <li><a href="/Panel/Brand/Index"><i class="glyphicon glyphicon-registration-mark"></i> Marka</a></li>
                         <li><a href="/Panel/Product/Index"><i class="glyphicon glyphicon-tag"></i> Ürün</a></li>
                         <li><a href="/Panel/User/Index"><i class="glyphicon glyphicon-user"></i> Kullanıcı</a></li>
-                        <li><a href="/Panel/Sale/Index"><i class="glyphicon glyphicon-usd"></i> Satış</a></li>
+                        <li class="submenu open">
+                            <a href="#">
+                                <i class="glyphicon glyphicon-usd"></i> Satışlar
+                                <span class="caret pull-right"></span>
+                            </a>
+                            <ul>
+                                <li><a href="/Panel/Sale/Index"><i class="glyphicon glyphicon-gbp"></i>Tüm Satışlar</a></li>
+                                <li><a href="/Panel/Sale/saleStatistics"><i class="glyphicon glyphicon-signal"></i>İstatistikler</a></li>
+                            </ul>
+
+                        </li>
 
                     </ul>
                 </div>
@@ -73,7 +83,7 @@
             <div class="col-md-10">
                 <div class="content-box-large">
                     @RenderBody()
-                    
+
                 </div>
             </div>
         </div>
@@ -92,5 +102,24 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="~/Areas/Panel/Content/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/Areas/Panel/Content/js/custom.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="vendors/morris/morris.css">
+
+    <script src="~/Areas/Panel/Content/vendors/jquery.knob.js"></script>
+    <script src="~/Areas/Panel/Content/vendors/raphael-min.js"></script>
+    <script src="~/Areas/Panel/Content/vendors/morris/morris.min.js"></script>
+    <script src="~/Areas/Panel/Content/vendors/flot/jquery.flot.js"></script>
+    <script src="~/Areas/Panel/Content/vendors/flot/jquery.flot.categories.js"></script>
+    <script src="~/Areas/Panel/Content/vendors/flot/jquery.flot.pie.js"></script>
+    <script src="~/Areas/Panel/Content/vendors/flot/jquery.flot.time.js"></script>
+    <script src="~/Areas/Panel/Content/vendors/flot/jquery.flot.stack.js"></script>
+    <script src="~/Areas/Panel/Content/vendors/flot/jquery.flot.resize.js"></script>
+    <script src="~/Areas/Panel/Content/js/custom.js"></script>
+    <script src="~/Areas/Panel/Content/js/stats.js"></script>
 </body>
 </html>

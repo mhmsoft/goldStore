@@ -21,6 +21,17 @@
           <Property Name="categoryName" Type="varchar" MaxLength="50" />
           <Property Name="image" Type="varbinary(max)" />
         </EntityType>
+        <EntityType Name="comment">
+          <Key>
+            <PropertyRef Name="commentId" />
+          </Key>
+          <Property Name="commentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="productId" Type="int" />
+          <Property Name="review" Type="text" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="created" Type="datetime" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="coupons">
           <Key>
             <PropertyRef Name="Id" />
@@ -144,6 +155,18 @@
           <Property Name="userId" Type="int" />
           <Property Name="created" Type="datetime" />
         </EntityType>
+        <Association Name="FK__comment__product__29221CFB">
+          <End Role="product" Type="Self.product" Multiplicity="0..1" />
+          <End Role="comment" Type="Self.comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="productId" />
+            </Principal>
+            <Dependent Role="comment">
+              <PropertyRef Name="productId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__coupons__userId__44FF419A">
           <End Role="user" Type="Self.user" Multiplicity="0..1" />
           <End Role="coupons" Type="Self.coupons" Multiplicity="*" />
@@ -295,6 +318,7 @@
         <EntityContainer Name="goldstoreModelStoreContainer">
           <EntitySet Name="brand" EntityType="Self.brand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="category" EntityType="Self.category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="comment" EntityType="Self.comment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="coupons" EntityType="Self.coupons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="orderDetails" EntityType="Self.orderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="orders" EntityType="Self.orders" Schema="dbo" store:Type="Tables" />
@@ -305,6 +329,10 @@
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="wishlist" EntityType="Self.wishlist" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__comment__product__29221CFB" Association="Self.FK__comment__product__29221CFB">
+            <End Role="product" EntitySet="product" />
+            <End Role="comment" EntitySet="comment" />
+          </AssociationSet>
           <AssociationSet Name="FK__coupons__userId__44FF419A" Association="Self.FK__coupons__userId__44FF419A">
             <End Role="user" EntitySet="user" />
             <End Role="coupons" EntitySet="coupons" />
@@ -394,6 +422,7 @@
           <NavigationProperty Name="wishlist" Relationship="goldstoreModel.FK__wishlist__produc__3F466844" FromRole="product" ToRole="wishlist" />
           <NavigationProperty Name="orderDetails" Relationship="goldstoreModel.fkProduct" FromRole="product" ToRole="orderDetails" />
           <Property Name="created" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="comment" Relationship="goldstoreModel.FK__comment__product__29221CFB" FromRole="product" ToRole="comment" />
         </EntityType>
         <EntityType Name="productImage">
           <Key>
@@ -545,6 +574,11 @@
           <AssociationSet Name="FK__orders__paymentT__49C3F6B7" Association="goldstoreModel.FK__orders__paymentT__49C3F6B7">
             <End Role="Payment" EntitySet="Payment" />
             <End Role="orders" EntitySet="orders" />
+          </AssociationSet>
+          <EntitySet Name="comment" EntityType="goldstoreModel.comment" />
+          <AssociationSet Name="FK__comment__product__29221CFB" Association="goldstoreModel.FK__comment__product__29221CFB">
+            <End Role="product" EntitySet="product" />
+            <End Role="comment" EntitySet="comment" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="wishlist">
@@ -713,6 +747,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="comment">
+          <Key>
+            <PropertyRef Name="commentId" />
+          </Key>
+          <Property Name="commentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="productId" Type="Int32" />
+          <Property Name="review" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="created" Type="DateTime" Precision="3" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="product" Relationship="goldstoreModel.FK__comment__product__29221CFB" FromRole="comment" ToRole="product" />
+        </EntityType>
+        <Association Name="FK__comment__product__29221CFB">
+          <End Type="goldstoreModel.product" Role="product" Multiplicity="0..1" />
+          <End Type="goldstoreModel.comment" Role="comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="productId" />
+            </Principal>
+            <Dependent Role="comment">
+              <PropertyRef Name="productId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -867,6 +925,18 @@
                 <ScalarProperty Name="orderDate" ColumnName="orderDate" />
                 <ScalarProperty Name="customerId" ColumnName="customerId" />
                 <ScalarProperty Name="orderId" ColumnName="orderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="comment">
+            <EntityTypeMapping TypeName="goldstoreModel.comment">
+              <MappingFragment StoreEntitySet="comment">
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="created" ColumnName="created" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="review" ColumnName="review" />
+                <ScalarProperty Name="productId" ColumnName="productId" />
+                <ScalarProperty Name="commentId" ColumnName="commentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -37,5 +37,6 @@ namespace goldStore.Areas.Panel.Models
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<coupons> coupons { get; set; }
         public virtual DbSet<orders> orders { get; set; }
+        public virtual DbSet<comment> comment { get; set; }
     }
 }
