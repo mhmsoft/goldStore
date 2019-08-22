@@ -1749,6 +1749,7 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ViewModel\BasketItem.cs" />
     <Compile Include="Models\ViewModel\CheckOut.cs" />
+    <Compile Include="Models\ViewModel\GraphData.cs" />
     <Compile Include="Models\ViewModel\Login.cs" />
     <Compile Include="Models\ViewModel\Register.cs" />
     <Compile Include="Models\ViewModel\ResetPassword.cs" />

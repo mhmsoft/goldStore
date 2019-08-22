@@ -1,4 +1,5 @@
 ﻿using goldStore.Areas.Panel.Models.Interface;
+using goldStore.Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,40 @@ namespace goldStore.Areas.Panel.Models.Repository
             }
             return bestSellers;
         }
+
+        public List<GraphData> donutGraphValues()
+        {
+
+            List<GraphData> donutValues = new List<GraphData>();
+            var query = _context.orderDetails.OrderByDescending(y => y.quantity).GroupBy(x => x.product.category.categoryName).
+                        Select(x => new { total = x.Sum(b => b.quantity* b.product.price), category = x.Key });
+
+            var getCategories = query.ToList();
+            decimal sumTotal = (decimal)getCategories.Sum(x => x.total);
+            foreach (var item in getCategories)
+            {
+                donutValues.Add(new GraphData {label=item.category,value=string.Format("{0:N2}",item.total/sumTotal*100) });
+            }
+            return donutValues;
+        }
+        public List<GraphData> donutGraphPaymentTypeValues()
+        {
+
+            List<GraphData> donutValues = new List<GraphData>();
+            var query = _context.orderDetails.OrderByDescending(y => y.quantity).GroupBy(x => x.orders.Payment.PaymentName).
+                        Select(x => new { ordertotal = x.Sum(b => b.orders.orderId), payment = x.Key });
+
+            var getPayments = query.ToList();
+            decimal sumTotal = (decimal)getPayments.Sum(x => x.ordertotal);
+            foreach (var item in getPayments)
+            {
+                donutValues.Add(new GraphData { label = item.payment, value = string.Format("{0:N2}", item.ordertotal / sumTotal * 100) });
+            }
+            return donutValues;
+        }
+
+
+
         public void Delete(orderDetails model)
         {
             if (model != null)
