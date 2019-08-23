@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using PagedList;
 namespace goldStore.Areas.Panel.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class SaleController : Controller
     {
         OrderRepository repoOrder = new OrderRepository(new Models.goldstoreEntities());
