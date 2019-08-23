@@ -1,56 +1,53 @@
-﻿@model IEnumerable<goldStore.Areas.Panel.Models.orders>
-
+﻿@model PagedList.IPagedList<goldStore.Areas.Panel.Models.orders>
+@using PagedList.Mvc
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Panel/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Tüm Siparişler</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.orderDate)
+            @Html.DisplayNameFor(model=>model.FirstOrDefault().orderDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.isOther)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().isOther)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.firstname)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().firstname)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.lastname)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().lastname)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.address)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().address)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.city)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().city)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.postCode)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().postCode)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.phone)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().phone)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.email)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.shipPrice)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().shipPrice)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.orderPrice)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().orderPrice)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.discountPrice)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().discountPrice)
         </th>
         
         <th>
-            @Html.DisplayNameFor(model => model.Payment.PaymentName)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Payment.PaymentName)
         </th>
         <th></th>
     </tr>
@@ -85,24 +82,32 @@
             @Html.DisplayFor(modelItem => item.email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.shipPrice)
+            ₺ @Html.DisplayFor(modelItem => item.shipPrice)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.orderPrice)
+            ₺ @Html.DisplayFor(modelItem => item.orderPrice)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.discountPrice)
+            ₺ @Html.DisplayFor(modelItem => item.discountPrice)
         </td>
         
         <td>
             @Html.DisplayFor(modelItem => item.Payment.PaymentName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.orderId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.orderId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.orderId })
+            @Html.ActionLink("Detaylar", "Detail", new { id=item.orderId }) |
+            @Html.ActionLink("Sil", "Delete", new { id=item.orderId })
         </td>
     </tr>
 }
 
 </table>
+<ul class="pagination">
+    @Html.PagedListPager(Model, page => Url.Action("/", new
+          {
+              page
+            
+
+          }))
+
+</ul>

@@ -28,7 +28,7 @@ namespace goldStore.Areas.Panel.Models.Repository
             }
             return bestSellers;
         }
-
+        // kategorilerin satışlara oranı
         public List<GraphData> donutGraphValues()
         {
 
@@ -44,6 +44,7 @@ namespace goldStore.Areas.Panel.Models.Repository
             }
             return donutValues;
         }
+        //ödeme yöntemlerin satışlara oranı
         public List<GraphData> donutGraphPaymentTypeValues()
         {
 
@@ -59,7 +60,23 @@ namespace goldStore.Areas.Panel.Models.Repository
             }
             return donutValues;
         }
+        //Tüm satışların aylık grafiği
+        public List<GraphData> LineGraphMonthlySale()
+        {
 
+            List<GraphData> lineValues = new List<GraphData>();
+            var query =  _context.orderDetails.GroupBy(o=> new { month = o.orders.orderDate.Value.Month, year= o.orders.orderDate.Value.Year }).
+                        Select(g => new { ordertotal = g.Sum(b => b.product.price*b.quantity), month = g.Key.month,year=g.Key.year })
+                        .OrderByDescending(a=>a.year).ThenByDescending(a=>a.month);
+
+            var getTotals = query.ToList();
+            //decimal sumTotal = (decimal)getTotals.Sum(x => x.ordertotal);
+            foreach (var item in getTotals)
+            {
+               lineValues.Add(new GraphData { label = item.year.ToString()+"-"+item.month.ToString(), value = item.ordertotal.ToString()});
+            }
+            return lineValues;
+        }
 
 
         public void Delete(orderDetails model)

@@ -1,0 +1,143 @@
+﻿@model IEnumerable<goldStore.Areas.Panel.Models.user>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Panel/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.firstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.postCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.city)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.hostName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.loginAttempt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.loginTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isMailVerified)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.subscribe)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.role.roleName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr style="@(item.roleId==1?"background-color:#ddd7d7":"")">
+        <td>
+            @Html.DisplayFor(modelItem => item.firstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.postCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.city)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.hostName)
+        </td>
+
+        <td>
+            @Html.CheckBox("isActive", item.isActive == true ? true : false, new { @userId = item.userId })
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.loginAttempt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createdDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.loginTime)
+        </td>
+        <td>
+            @Html.CheckBox("isMailVerified", item.isMailVerified == true ? true : false)
+        </td>
+
+        <td>
+            @Html.CheckBox("subscribe", item.subscribe == true ? true : false)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.role.roleName)
+        </td>
+
+    </tr>
+    }
+
+</table>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $(function () {
+
+        $(document).on("click", "#isActive", function () {
+            var Id = $(this).attr("userId");
+           
+          
+            $.ajax({
+                url: "@Url.Action("doPassiveUser", "Users")",
+                type: 'POST',
+                data: {userId:Id},
+                success: function (response) {
+                 
+                    alert(response);
+                      location.reload();
+                }
+            });
+
+        });
+
+    });
+
+</script>

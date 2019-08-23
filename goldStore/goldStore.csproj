@@ -536,6 +536,7 @@
     <Content Include="Areas\Panel\Content\js\custom.js" />
     <Content Include="Areas\Panel\Content\js\editors.js" />
     <Content Include="Areas\Panel\Content\js\forms.js" />
+    <Content Include="Areas\Panel\Content\js\notify.js" />
     <Content Include="Areas\Panel\Content\js\stats.js" />
     <Content Include="Areas\Panel\Content\js\tables.js" />
     <Content Include="Areas\Panel\Content\vendors\address\address.css" />
@@ -1674,6 +1675,7 @@
     <Compile Include="Areas\Panel\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Panel\Controllers\ProductController.cs" />
     <Compile Include="Areas\Panel\Controllers\SaleController.cs" />
+    <Compile Include="Areas\Panel\Controllers\UsersController.cs" />
     <Compile Include="Areas\Panel\Models\brand.cs">
       <DependentUpon>GSModel.tt</DependentUpon>
     </Compile>
@@ -1893,6 +1895,8 @@
     <Content Include="Areas\Panel\Content\ckeditor\skins\moono-lisa\readme.md" />
     <Content Include="Areas\Panel\Views\Sale\Index.cshtml" />
     <Content Include="Areas\Panel\Views\Sale\saleStatistics.cshtml" />
+    <Content Include="Areas\Panel\Views\Sale\Detail.cshtml" />
+    <Content Include="Areas\Panel\Views\Users\Index.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\_Shared\_header.cshtml" />
     <Content Include="Views\_Shared\_footer.cshtml" />

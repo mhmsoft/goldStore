@@ -123,7 +123,15 @@ namespace goldStore.Controllers
         {
             return View();
         }
-
+        public string GetIp()
+        {
+            string ip = System.Web.HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = System.Web.HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
+            }
+            return ip;
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(Login login,string ReturnUrl)
@@ -167,7 +175,8 @@ namespace goldStore.Controllers
                 {
                     _user.loginTime = DateTime.Now;
                     _user.loginAttempt = sayac;
-                  
+                    _user.isActive = true;
+                    _user.hostName= GetIp();
                     repoUser.Update(_user);
 
                     Session["username"] = _user.email;
