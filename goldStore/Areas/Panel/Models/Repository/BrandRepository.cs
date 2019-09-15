@@ -1,4 +1,5 @@
-﻿using goldStore.Areas.Panel.Models.Interface;
+﻿using goldStore.Areas.Panel.Models.Entity;
+using goldStore.Areas.Panel.Models.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

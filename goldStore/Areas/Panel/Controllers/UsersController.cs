@@ -1,4 +1,5 @@
 ﻿using goldStore.Areas.Panel.Models;
+using goldStore.Areas.Panel.Models.Entity;
 using goldStore.Areas.Panel.Models.Repository;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace goldStore.Areas.Panel.Controllers
     [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
-        UserRepository repoUser = new UserRepository(new Models.goldstoreEntities() );
+        UserRepository repoUser = new UserRepository(new goldstoreEntities() );
         // GET: Panel/Users
         public ActionResult Index()
         {

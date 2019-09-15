@@ -1,4 +1,5 @@
-﻿using goldStore.Areas.Panel.Models.Interface;
+﻿using goldStore.Areas.Panel.Models.Entity;
+using goldStore.Areas.Panel.Models.Interface;
 using goldStore.Models.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace goldStore.Areas.Panel.Models.Repository
         {
 
             List<GraphData> donutValues = new List<GraphData>();
-            var query = _context.orderDetails.OrderByDescending(y => y.quantity).GroupBy(x => x.orders.Payment.PaymentName).
+            var query = _context.orderDetails.OrderByDescending(y => y.quantity).GroupBy(x => x.orders.payment.PaymentName).
                         Select(x => new { ordertotal = x.Sum(b => b.orders.orderId), payment = x.Key });
 
             var getPayments = query.ToList();

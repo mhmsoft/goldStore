@@ -15,6 +15,7 @@ using System.Net.Configuration;
 using System.Net.Mail;
 using System.Net;
 using System.Configuration;
+using goldStore.Areas.Panel.Models.Entity;
 
 namespace goldStore.Controllers
 {

@@ -1,4 +1,5 @@
-﻿using goldStore.Areas.Panel.Models.Repository;
+﻿using goldStore.Areas.Panel.Models.Entity;
+using goldStore.Areas.Panel.Models.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace goldStore.Models
 {
     public class Role : RoleProvider
     {
-        UserRepository userRepo = new UserRepository( new Areas.Panel.Models.goldstoreEntities());
+        UserRepository userRepo = new UserRepository( new goldstoreEntities());
 
         public override string ApplicationName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

@@ -1,4 +1,5 @@
 ﻿using goldStore.Areas.Panel.Models;
+using goldStore.Areas.Panel.Models.Entity;
 using goldStore.Areas.Panel.Models.Repository;
 using goldStore.Areas.Panel.Models.Security;
 using System;

@@ -1,4 +1,4 @@
-﻿using goldStore.Areas.Panel.Models;
+﻿using goldStore.Areas.Panel.Models.Entity;
 using goldStore.Areas.Panel.Models.Repository;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace goldStore.Areas.Panel.Controllers
     [Authorize(Roles = "admin")]
     public class ProductController : Controller
     {
-        ProductRepository repository = new ProductRepository( new Models.goldstoreEntities());
+        ProductRepository repository = new ProductRepository( new goldstoreEntities());
         // GET: Panel/Product
         public ActionResult Index()
         {

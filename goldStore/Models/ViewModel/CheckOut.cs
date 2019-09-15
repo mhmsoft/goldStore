@@ -1,4 +1,5 @@
 ﻿using goldStore.Areas.Panel.Models;
+using goldStore.Areas.Panel.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

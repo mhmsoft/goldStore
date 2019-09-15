@@ -11,7 +11,7 @@
             <div class="ht__coupon__code">
                 @using (Html.BeginForm("Login", "User",FormMethod.Post, new { id = "loginForm" }))
                 {
-                     @Html.AntiForgeryToken()
+                    @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <input type="hidden" name="ReturnUrl"  value="@Request.QueryString["ReturnUrl"]" />
                     <label>Login Formu</label>

@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<goldStore.Models.ViewModel.BasketItem>
-@using goldStore.Areas.Panel.Models
+@using goldStore.Areas.Panel.Models.Entity
 @{
     Layout = null;
 }
@@ -21,6 +21,8 @@
         </div>
     </div>
 </div>
+@if (Model != null)
+{
 <div class="cart-main-area ptb--100 bg__white">
     <div class="container">
         <div class="row">
@@ -39,7 +41,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Model.Any())
+                                @if (Model != null)
                                 {
                                     foreach (var item in Model)
                                     {
@@ -74,19 +76,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="buttons-cart--inner">
-                                <div class="buttons-cart">
-                                    <a href="#">Continue Shopping</a>
-                                </div>
-                                <div class="buttons-cart checkout--btn">
-                                    <a href="#">update</a>
-                                    <a href="#">checkout</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+
                     <div class="row">
                         <div class="col-md-6 col-sm-12 col-xs-12">
                             <div class="ht__coupon__code">
@@ -99,6 +90,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-6 col-sm-12 col-xs-12 smt-40 xmt-40">
                             <div class="htc__cart__total">
                                 <h6>cart total</h6>
@@ -106,7 +98,7 @@
                                     <ul class="cart__desc">
                                         <li>Toplam Tutar</li>
                                         <li>İndirim</li>
-                                        
+
                                     </ul>
                                     <ul class="cart__price">
                                         <li>₺@Model.Sum(x => x.product.price * x.quantity)</li>
@@ -123,7 +115,7 @@
                                             }
                                             ₺ @indirim_tutari
                                         </li>
-                                     
+
                                     </ul>
                                 </div>
                                 <div class="cart__total">
@@ -136,12 +128,16 @@
                                 </ul>
                             </div>
                         </div>
+
+
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+}
+
 
 
 @{

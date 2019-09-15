@@ -12,14 +12,15 @@ using System.Configuration;
 using System.Net.Mail;
 using System.Net;
 using System.Web.Security;
+using goldStore.Areas.Panel.Models.Entity;
 
 namespace goldStore.Controllers
 {
     public class UserController : Controller
     {
-        CategoryRepository repoCategory = new CategoryRepository(new Areas.Panel.Models.goldstoreEntities());
-        BrandRepository repoBrand = new BrandRepository(new Areas.Panel.Models.goldstoreEntities());
-        UserRepository repoUser = new UserRepository(new Areas.Panel.Models.goldstoreEntities());
+        CategoryRepository repoCategory = new CategoryRepository(new goldstoreEntities());
+        BrandRepository repoBrand = new BrandRepository(new goldstoreEntities());
+        UserRepository repoUser = new UserRepository(new goldstoreEntities());
        
         // GET: User
         public PartialViewResult PartialBrands()

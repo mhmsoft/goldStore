@@ -1,4 +1,4 @@
-﻿using goldStore.Areas.Panel.Models;
+﻿using goldStore.Areas.Panel.Models.Entity;
 using goldStore.Areas.Panel.Models.Repository;
 using System;
 using System.Collections.Generic;

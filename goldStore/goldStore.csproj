@@ -1488,16 +1488,6 @@
     <Content Include="Areas\Panel\Content\vendors\wysiwyg\bootstrap-wysihtml5.css" />
     <Content Include="Areas\Panel\Content\vendors\wysiwyg\bootstrap-wysihtml5.js" />
     <Content Include="Areas\Panel\Content\vendors\wysiwyg\wysihtml5-0.3.0.js" />
-    <Content Include="Areas\Panel\Models\GSModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GSModel.edmx</DependentUpon>
-      <LastGenOutput>GSModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\Panel\Models\GSModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GSModel.edmx</DependentUpon>
-      <LastGenOutput>GSModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Areas\Panel\Views\Shared\sample\buttons.html" />
     <Content Include="Areas\Panel\Views\Shared\sample\calendar.html" />
     <Content Include="Areas\Panel\Views\Shared\sample\editors.html" />
@@ -1676,49 +1666,20 @@
     <Compile Include="Areas\Panel\Controllers\ProductController.cs" />
     <Compile Include="Areas\Panel\Controllers\SaleController.cs" />
     <Compile Include="Areas\Panel\Controllers\UsersController.cs" />
-    <Compile Include="Areas\Panel\Models\brand.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\category.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\comment.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\coupons.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\GSModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GSModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\GSModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\GSModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GSModel.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Areas\Panel\Models\Entity\brand.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\category.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\comment.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\coupons.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\ModelContext.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\orderDetails.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\orders.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\payment.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\product.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\productImage.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\role.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\user.cs" />
+    <Compile Include="Areas\Panel\Models\Entity\wishlist.cs" />
     <Compile Include="Areas\Panel\Models\Interface\IRepository.cs" />
-    <Compile Include="Areas\Panel\Models\orderDetails.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\orders.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\Payment.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\product.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\productImage.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Areas\Panel\Models\Repository\BrandRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\CategoryRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\commentRepository.cs" />
@@ -1728,19 +1689,7 @@
     <Compile Include="Areas\Panel\Models\Repository\ProductRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\UserRepository.cs" />
     <Compile Include="Areas\Panel\Models\Repository\WishListRepository.cs" />
-    <Compile Include="Areas\Panel\Models\role.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Areas\Panel\Models\Security\Crypto.cs" />
-    <Compile Include="Areas\Panel\Models\sysdiagrams.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\user.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Areas\Panel\Models\wishlist.cs">
-      <DependentUpon>GSModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Areas\Panel\PanelAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
@@ -1748,6 +1697,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ViewModel\BasketItem.cs" />
     <Compile Include="Models\ViewModel\CheckOut.cs" />
@@ -1839,13 +1789,6 @@
     <Content Include="Areas\Panel\Views\Brand\Delete.cshtml" />
     <Content Include="Areas\Panel\Views\Product\Index.cshtml" />
     <Content Include="Areas\Panel\Views\Product\Create.cshtml" />
-    <EntityDeploy Include="Areas\Panel\Models\GSModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>GSModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Areas\Panel\Models\GSModel.edmx.diagram">
-      <DependentUpon>GSModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Panel\Views\Product\Edit.cshtml" />
     <Content Include="Areas\Panel\Views\Product\Delete.cshtml" />
     <Content Include="Asset\css\plugins\fonts\slick.eot" />

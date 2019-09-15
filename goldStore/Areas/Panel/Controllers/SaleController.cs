@@ -6,14 +6,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using goldStore.Areas.Panel.Models.Entity;
+
 namespace goldStore.Areas.Panel.Controllers
 {
     [Authorize(Roles = "admin")]
     public class SaleController : Controller
     {
-        OrderRepository repoOrder = new OrderRepository(new Models.goldstoreEntities());
-        OrderDetailRepository repoOrderDetail = new OrderDetailRepository(new Models.goldstoreEntities());
-        CategoryRepository repoCategory = new CategoryRepository(new Models.goldstoreEntities());
+        OrderRepository repoOrder = new OrderRepository(new goldstoreEntities());
+        OrderDetailRepository repoOrderDetail = new OrderDetailRepository(new goldstoreEntities());
+        CategoryRepository repoCategory = new CategoryRepository(new goldstoreEntities());
         // GET: Panel/Sale
         public ActionResult Index(int?page)
         {
