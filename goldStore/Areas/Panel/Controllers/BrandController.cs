@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace goldStore.Areas.Panel.Controllers
 {
-    [Authorize(Roles ="admin")]
+    //[Authorize(Roles ="admin")]
     public class BrandController : Controller
     {
         // GET: Panel/Brand

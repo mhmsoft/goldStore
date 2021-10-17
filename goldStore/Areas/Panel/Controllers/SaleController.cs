@@ -10,7 +10,7 @@ using goldStore.Areas.Panel.Models.Entity;
 
 namespace goldStore.Areas.Panel.Controllers
 {
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     public class SaleController : Controller
     {
         OrderRepository repoOrder = new OrderRepository(new goldstoreEntities());

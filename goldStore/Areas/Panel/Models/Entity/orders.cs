@@ -30,5 +30,6 @@ namespace goldStore.Areas.Panel.Models.Entity
         public virtual ICollection<orderDetails> orderDetails { get; set; }
         public virtual user user { get; set; }
         public virtual payment payment { get; set; }
+        
     }
 }
